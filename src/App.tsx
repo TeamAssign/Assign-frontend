@@ -1,7 +1,7 @@
-import "./index.css";
+import "@/styles/global.css";
 
-function App() {
+const App = () => {
   return <div>app</div>;
-}
+};
 
 export default App;
