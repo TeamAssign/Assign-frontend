@@ -14,42 +14,45 @@ interface InputProps extends Omit<React.ComponentProps<'textarea'>, 'size'> {
   value?: string
 }
 
-const Textarea = React.forwardRef<HTMLTextAreaElement, InputProps>(
-  ({ size = 'md', className, value, onChange, ...props }) => {
-    const textareaRef = React.useRef<HTMLTextAreaElement>(null)
+const Textarea = ({
+  size = 'md',
+  className,
+  value,
+  onChange,
+  ...props
+}: InputProps) => {
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null)
 
-    const handleAutoResize = React.useCallback(() => {
-      const textarea = textareaRef.current
-      if (!textarea) return
+  const handleAutoResize = React.useCallback(() => {
+    const textarea = textareaRef.current
+    if (!textarea) return
 
-      textarea.style.height = 'auto'
-      textarea.style.height = `${textarea.scrollHeight}px`
-    }, [])
+    textarea.style.height = 'auto'
+    textarea.style.height = `${textarea.scrollHeight}px`
+  }, [])
 
-    React.useEffect(() => {
-      handleAutoResize()
-    }, [value, handleAutoResize])
+  React.useEffect(() => {
+    handleAutoResize()
+  }, [value, handleAutoResize])
 
-    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      onChange?.(e)
-      handleAutoResize()
-    }
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    onChange?.(e)
+    handleAutoResize()
+  }
 
-    return (
-      <textarea
-        className={cn(
-          'flex min-h-[80px] w-full rounded-md border border-[#E4E4E7] px-3 py-2 text-base resize-none',
-          className,
-          sizeClasses[size],
-        )}
-        ref={textareaRef}
-        onChange={handleChange}
-        value={value}
-        {...props}
-      />
-    )
-  },
-)
-Textarea.displayName = 'Textarea'
+  return (
+    <textarea
+      className={cn(
+        'flex min-h-[80px] w-full rounded-md border border-[#E4E4E7] px-3 py-2 text-base resize-none',
+        className,
+        sizeClasses[size],
+      )}
+      ref={textareaRef}
+      onChange={handleChange}
+      value={value}
+      {...props}
+    />
+  )
+}
 
 export { Textarea }
