@@ -50,7 +50,7 @@ interface AvatarProps {
   text: string
 }
 
-export const Avatar = ({ imgUrl, text }: AvatarProps) => {
+const Avatar = ({ imgUrl, text }: AvatarProps) => {
   return (
     <AvatarExam>
       <AvatarImage src={imgUrl} />
@@ -58,3 +58,4 @@ export const Avatar = ({ imgUrl, text }: AvatarProps) => {
     </AvatarExam>
   )
 }
+export default Avatar

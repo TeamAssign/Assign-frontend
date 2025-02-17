@@ -55,4 +55,4 @@ const Textarea = ({
   )
 }
 
-export { Textarea }
+export default Textarea
