@@ -1,0 +1,52 @@
+const reviewData = [
+  {
+    recommendationId: 1231,
+    imgUrl: 'https://github.com/shadcn.png',
+    category: '중식',
+    type: '혼밥',
+    menu: '짜장면',
+    comment: '면이 쫄깃하고 소스가 진해요',
+    star: 4,
+    participants: [11, 22, 33],
+  },
+  {
+    imgUrl: 'https://example.com/images/mapo-tofu.jpg',
+    category: '중식',
+    type: '혼밥',
+    menu: '마파두부',
+    comment: '매콤하고 밥도둑이에요',
+    star: 5,
+    participants: [11, 44],
+  },
+  {
+    recommendationId: 1233,
+    imgUrl: 'https://example.com/images/tangsuyuk.jpg',
+    category: '중식',
+    type: '단체',
+    menu: '탕수육',
+    comment: '겉바속촉 완벽해요',
+    star: 4,
+    participants: [22, 33, 44, 55],
+  },
+  {
+    recommendationId: 1234,
+    imgUrl: 'https://example.com/images/kungpao.jpg',
+    category: '중식',
+    type: '회식',
+    menu: '궁보계정',
+    comment: '견과류의 고소함이 매력적',
+    star: 3,
+    participants: [11, 33, 66],
+  },
+  {
+    imgUrl: 'https://example.com/images/dimsum.jpg',
+    category: '중식',
+    type: '단체',
+    menu: '딤섬',
+    comment: '소스가 별로에요',
+    star: 2,
+    participants: [22, 44, 77],
+  },
+]
+
+export default reviewData
