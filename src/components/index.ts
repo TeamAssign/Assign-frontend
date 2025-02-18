@@ -1,4 +1,8 @@
+export { default as FeedReviewBar } from '@/components/common/FeedReviewBar'
+export { default as HistoryBar } from '@/components/common/HistoryBar'
 export { default as Modal } from '@/components/common/Modal'
+export { default as SelectBar } from '@/components/common/SelectBar'
+export { default as Tag } from '@/components/common/Tag'
 export { default as Header } from '@/components/layouts/Header'
 export { default as Layout } from '@/components/layouts/Layout'
 export { default as NavBar } from '@/components/layouts/NavBar'
