@@ -62,7 +62,7 @@ const FlavorStatItem = ({
   const [currentValue, setCurrentValue] = useState<number>(defaultValue)
 
   return (
-    <section className='w-full flex gap-3 text-body items-center'>
+    <section className='w-full flex gap-3 text-subbody items-center'>
       <span className='text-main-black'>{label}</span>
       <Slider
         onValueChange={(value) => {
