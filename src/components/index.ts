@@ -1,4 +1,5 @@
 export { default as Modal } from '@/components/common/Modal'
+export { default as SelectBox } from '@/components/common/SelectBox'
 export { default as Header } from '@/components/layouts/Header'
 export { default as Layout } from '@/components/layouts/Layout'
 export { default as NavBar } from '@/components/layouts/NavBar'
