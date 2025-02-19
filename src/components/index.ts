@@ -1,4 +1,3 @@
-export { default as ExpandableText } from '@/components/common/ExpandableText'
 export { default as Modal } from '@/components/common/Modal'
 export { default as SelectBox } from '@/components/common/SelectBox'
 export { default as FeedProfileInfo } from '@/components/Feed/FeedProfileInfo'
