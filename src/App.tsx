@@ -1,7 +1,8 @@
-import "@/styles/global.css";
+import '@/styles/global.css'
+import { Routes } from './routes'
 
 const App = () => {
-  return <div>app</div>;
-};
+  return <Routes />
+}
 
-export default App;
+export default App
