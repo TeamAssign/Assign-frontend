@@ -4,12 +4,13 @@ import { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 
 interface ModalProps {
+  title?: string
   isOpen: boolean
   onClose: () => void
   content: React.ReactNode
 }
 
-const Modal = ({ isOpen, onClose, content }: ModalProps) => {
+const Modal = ({ title, isOpen, onClose, content }: ModalProps) => {
   const [isClosing, setIsClosing] = useState(false)
 
   useEffect(() => {
@@ -35,12 +36,13 @@ const Modal = ({ isOpen, onClose, content }: ModalProps) => {
   const modalContent = (
     <div
       className={cn(
-        'fixed inset-0 z-50 flex flex-col bg-white',
+        'fixed max-w-[600px] mx-auto inset-0 z-50 flex flex-col bg-white',
         isClosing ? 'animate-slide-down' : 'animate-slide-up',
       )}
     >
-      <div className='flex justify-end p-4'>
-        <button onClick={handleClose} className='text-2xl'>
+      <div className='flex justify-between p-4 border-b-[1px] border-light-gray'>
+        <span className='text-main-black font-semibold'>{title}</span>
+        <button onClick={handleClose} className='text-2xl cursor-pointer'>
           <CancelBold />
         </button>
       </div>
