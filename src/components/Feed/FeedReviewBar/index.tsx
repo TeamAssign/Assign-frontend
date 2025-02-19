@@ -11,6 +11,52 @@ interface FeedReviewBarProps {
   isRecommendation: boolean
 }
 
+/**
+ * FeedReviewBar 컴포넌트 - 리뷰 피드 항목을 표시하는 카드형 UI
+ *
+ * @param {object} props
+ * @param {string} props.imgUrl - 음식/장소 이미지 URL
+ * @param {string} props.category - 카테고리 태그 (예: '양식', '한식' 등)
+ * @param {string} props.type - 타입 태그 (예: '배달', '방문' 등)
+ * @param {string} props.menu - 메뉴 또는 장소명
+ * @param {string} props.comment - 리뷰 코멘트 내용
+ * @param {number} props.star - 별점 (1-5)
+ * @param {boolean} props.isRecommendation - AI 추천 여부
+ *
+ * @example
+ * const FeedPage = () => {
+ *   const reviews = [
+ *     {
+ *       id: 'review-456',
+ *       imgUrl: '/images/burger.jpg',
+ *       category: '패스트푸드',
+ *       type: '매장',
+ *       menu: '트러플 버거',
+ *       comment: '트러플 향이 은은하게 퍼지고 패티가 굉장히, 굉장히, 굉장히, 굉장히 두껍고 맛있었습니다!',
+ *       star: 4,
+ *       isRecommendation: true
+ *     }
+ *   ]
+ *
+ *   return (
+ *     <div className="feed-container">
+ *       {reviews.map(review => (
+ *         <FeedReviewBar
+ *           key={review.id}
+ *           {...review}
+ *         />
+ *       ))}
+ *     </div>
+ *   )
+ * }
+ *
+ * 주요 기능:
+ * - 별점 시각화 (★/☆)
+ * - 긴 리뷰 코멘트 접고 펼치기
+ * - AI 추천 여부 태그 표시
+ * - '또 먹었어요' 액션 버튼
+ */
+
 const FeedReviewBar = ({
   imgUrl,
   category,
