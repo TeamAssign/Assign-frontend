@@ -2,6 +2,8 @@ import { Layout, SimpleLayout } from '@/components'
 import History from '@/pages/History'
 import Home from '@/pages/Home'
 import My from '@/pages/My'
+import Recommendation from '@/pages/Recommendation'
+import SelectMember from '@/pages/SelectMember'
 import SignIn from '@/pages/SignIn'
 import SignUp from '@/pages/SignUp'
 import Team from '@/pages/Team'
@@ -21,6 +23,8 @@ const router = createBrowserRouter([
       { path: '/history', element: <History /> },
       { path: '/my', element: <My /> },
       { path: '/teams/:teamId', element: <Team /> },
+      { path: '/recommendation', element: <Recommendation /> },
+      { path: '/selectmember', element: <SelectMember /> },
     ],
   },
   {
