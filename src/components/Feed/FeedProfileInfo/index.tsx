@@ -1,7 +1,6 @@
 import DissatisfiedIcon from '@/assets/icons/DissatisfiedIcon.svg?react'
 import EditIcon from '@/assets/icons/EditIcon.svg?react'
 import SatisfiedIcon from '@/assets/icons/SatisfiedIcon.svg?react'
-import { ExpandableText } from '@/components'
 import FlavorStatItem from '@/components/common/FlavorStatItem'
 
 interface FeedProfileInfoProps {
@@ -76,11 +75,11 @@ const FeedProfileInfo = ({
         <FlavorStatItem defaultValue={sweet} type='sweet' label='달기' />
         <div className='w-full flex gap-3 text-subbody'>
           <SatisfiedIcon className='w-5 h-5 flex-shrink-0' />
-          <ExpandableText text={pros} />
+          <p className='w-4/5'>{pros}</p>
         </div>
         <div className='w-full flex gap-3 text-subbody'>
           <DissatisfiedIcon className='w-5 h-5 flex-shrink-0' />
-          <ExpandableText text={cons} />
+          <p className='w-4/5'>{cons}</p>
         </div>
       </div>
     </section>
