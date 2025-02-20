@@ -67,7 +67,7 @@ const recommendationData = [
         profileImage: 'https://github.com/shadcn.png',
       },
       {
-        id: 32523,
+        id: 32523352532,
         name: '아무개',
         team: '개발 3팀',
         profileImage: 'https://github.com/shadcn.png',
@@ -145,7 +145,7 @@ const recommendationData = [
   },
   {
     recommendationId: 1237,
-    type: '혼밥',
+    type: '혼밥 먹기',
     category: '일식',
     name: '덮밥',
     reason: '간편하게 한 그릇으로 배부르게',
