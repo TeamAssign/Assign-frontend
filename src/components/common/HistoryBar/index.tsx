@@ -105,6 +105,7 @@ const HistoryBar = ({
               type={type}
               menu={menu}
               participants={participants}
+              category={category}
             />
           }
         />
