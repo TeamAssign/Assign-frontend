@@ -1,4 +1,5 @@
 import { Button, Modal, ReviewForm, Tag } from '@/components'
+import { participant } from '@/types'
 import { useEffect, useRef, useState } from 'react'
 
 interface HistoryBarProps {
@@ -9,12 +10,7 @@ interface HistoryBarProps {
   menu: string
   comment: string
   isReviewed: boolean
-  participants: {
-    id: number
-    name: string
-    team: string
-    profileImage: string
-  }[]
+  participants: participant[]
 }
 
 const HistoryBar = ({
@@ -105,6 +101,7 @@ const HistoryBar = ({
               type={type}
               menu={menu}
               participants={participants}
+              isEditMember={true}
               category={category}
             />
           }
