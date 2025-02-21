@@ -77,7 +77,7 @@ const ReviewForm = ({
     handleMemberInputChange,
     handleSelectMember,
     handleDeleteMember,
-  } = useSearchMember(usersData)
+  } = useSearchMember(usersData, participants)
 
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const [previewImg, setPreviewImg] = useState<string | null>()
@@ -176,7 +176,7 @@ const ReviewForm = ({
           )}
 
           <div className='flex gap-4 items-center overflow-x-auto whitespace-nowrap '>
-            {members?.map((member) => (
+            {members.map((member) => (
               <div className='relative py-2' key={member.id}>
                 <Avatar
                   imgUrl={member.profileImage}
