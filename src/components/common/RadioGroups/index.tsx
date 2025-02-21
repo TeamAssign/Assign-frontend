@@ -4,12 +4,14 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 const EAT_TYPES_LIST = ['혼밥 먹기', '같이 먹기', '회식']
 
 interface RadioGroupsType {
+  isEdit: boolean
   defaultType?: string
 }
 
-const RadioGroups = ({ defaultType }: RadioGroupsType) => {
+const RadioGroups = ({ defaultType, isEdit }: RadioGroupsType) => {
   return (
     <RadioGroup
+      disabled={!isEdit}
       className='flex items-center gap-8'
       defaultValue={defaultType || EAT_TYPES_LIST[0]}
     >
