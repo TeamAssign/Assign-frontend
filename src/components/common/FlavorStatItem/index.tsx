@@ -62,21 +62,25 @@ const FlavorStatItem = ({
   const [currentValue, setCurrentValue] = useState<number>(defaultValue)
 
   return (
-    <section className='w-full flex gap-3 text-subbody items-center'>
-      <span className='text-main-black'>{label}</span>
-      <Slider
-        onValueChange={(value) => {
-          setCurrentValue(value[0])
-          if (onValueChange) {
-            onValueChange(type, value[0])
-          }
-        }}
-        className='w-3/5'
-        defaultValue={[defaultValue]}
-        max={5}
-        step={0.01}
-      />
-      <span className='text-subbody'>{currentValue.toFixed(1)}</span>
+    <section className='flex items-center w-full gap-3 text-subbody'>
+      <span className='font-semibold w-14 text-main-black'>{label}</span>
+      <div className='flex items-center w-full gap-3'>
+        <Slider
+          onValueChange={(value) => {
+            setCurrentValue(value[0])
+            if (onValueChange) {
+              onValueChange(type, value[0])
+            }
+          }}
+          className='w-full'
+          defaultValue={[defaultValue]}
+          max={5}
+          step={0.01}
+        />
+        <span className='w-8 text-right text-gray-500 text-subbody'>
+          {currentValue.toFixed(1)}
+        </span>
+      </div>
     </section>
   )
 }
