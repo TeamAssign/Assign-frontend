@@ -1,6 +1,13 @@
 import CancelCircleIcon from '@/assets/icons/cancel-circle.svg?react'
 import ImageIcon from '@/assets/icons/image-icon.svg?react'
-import { Avatar, Button, Input, RadioGroups, TextArea } from '@/components'
+import {
+  Avatar,
+  Button,
+  Input,
+  RadioGroups,
+  SearchDropDown,
+  TextArea,
+} from '@/components'
 import {
   Select,
   SelectContent,
@@ -11,21 +18,20 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { FOOD_CATEGORIES } from '@/constant'
+import useSearchMember from '@/hooks/useSearchMember'
 import { cn } from '@/lib/utils'
-import { ChangeEvent, useRef, useState } from 'react'
+import { usersData } from '@/mocks/usersData'
+import { participant } from '@/types'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 interface ReviewFormProps {
+  isEditMember: boolean
   type?: string
   recommendationId?: number
   menu?: string
   category?: string
-  participants?: {
-    id: number
-    name: string
-    team: string
-    profileImage: string
-  }[]
+  participants?: participant[]
 }
 
 interface ReviewFormValues {
@@ -36,15 +42,11 @@ interface ReviewFormValues {
   comment: string
   category: string
   star: number
-  participants: {
-    id: number
-    name: string
-    team: string
-    profileImage: string
-  }[]
+  participants: participant[]
 }
 
 const ReviewForm = ({
+  isEditMember,
   recommendationId,
   type,
   menu,
@@ -65,9 +67,26 @@ const ReviewForm = ({
       },
     },
   )
+
+  const {
+    ref,
+    members,
+    searchInput,
+    searchMemberList,
+    isOpenMemberDropDown,
+    handleMemberInputChange,
+    handleSelectMember,
+    handleDeleteMember,
+  } = useSearchMember(usersData)
+
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const [previewImg, setPreviewImg] = useState<string | null>()
-  const rating = watch('star', 0)
+
+  const rating = watch('star')
+
+  useEffect(() => {
+    setValue('participants', members)
+  }, [members, setValue])
 
   const handleClickSubmit = (data: ReviewFormValues) => {
     console.log(data)
@@ -102,7 +121,7 @@ const ReviewForm = ({
       >
         <div className='flex flex-col gap-2'>
           <h1 className='text-sub-2 font-semibold'>식사 유형</h1>
-          <RadioGroups defaultType={type} />
+          <RadioGroups isEdit={isEditMember} defaultType={type} />
         </div>
 
         <div className='flex flex-col gap-2'>
@@ -139,16 +158,38 @@ const ReviewForm = ({
         </div>
         <div className='flex flex-col gap-2'>
           <h1 className='text-sub-2 font-semibold'>먹은 사람 등록</h1>
-          <div className='flex gap-4'>
-            {participants?.map((participant) => (
-              <div className='relative' key={participant.id}>
+          {isEditMember && (
+            <div className='relative'>
+              <Input
+                placeholder='이름을 검색해주세요'
+                value={searchInput}
+                className='focus:outline-none focus:border-black'
+                onChange={handleMemberInputChange}
+              />
+              <SearchDropDown
+                ref={ref}
+                isOpen={isOpenMemberDropDown}
+                onClick={handleSelectMember}
+                memberList={searchMemberList}
+              />
+            </div>
+          )}
+
+          <div className='flex gap-4 items-center overflow-x-auto whitespace-nowrap '>
+            {members?.map((member) => (
+              <div className='relative py-2' key={member.id}>
                 <Avatar
-                  imgUrl={participant.profileImage}
-                  text={participant.name}
-                  name={participant.name}
-                  department={participant.team}
+                  imgUrl={member.profileImage}
+                  text={member.name}
+                  name={member.name}
+                  department={member.team}
                 />
-                <CancelCircleIcon className='absolute -top-1 -right-2 cursor-pointer' />
+                {isEditMember && (
+                  <CancelCircleIcon
+                    onClick={() => handleDeleteMember(member.id)}
+                    className='absolute top-0 -right-2 cursor-pointer'
+                  />
+                )}
               </div>
             ))}
           </div>
