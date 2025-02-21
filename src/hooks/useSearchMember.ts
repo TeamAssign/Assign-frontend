@@ -1,8 +1,11 @@
 import { participant } from '@/types'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
 
-const useSearchMember = (usersData: participant[]) => {
-  const [members, setMembers] = useState<participant[]>([])
+const useSearchMember = (
+  usersData: participant[],
+  participants: participant[] = [],
+) => {
+  const [members, setMembers] = useState<participant[]>(participants)
   const [searchInput, setSearchInput] = useState('')
   const [searchMemberList, setSearchMemberList] = useState<participant[]>([])
   const [isOpenMemberDropDown, setIsOpenMemberDropDown] = useState(false)
