@@ -101,7 +101,7 @@ const HistoryBar = ({
               type={type}
               menu={menu}
               participants={participants}
-              isEditMember={true}
+              isEditMember={false}
               category={category}
             />
           }
