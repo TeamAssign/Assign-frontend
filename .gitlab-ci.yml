@@ -11,8 +11,8 @@ build:
     - frontend
   script:
     - docker build
-      --build-arg VITE_AUTH0_DOMAIN=$VITE_AUTH0_DOMAIN
-      --build-arg VITE_AUTH0_CLIENT_ID=$VITE_AUTH0_CLIENT_ID
+      --build-arg VITE_AUTH0_DOMAIN="${VITE_AUTH0_DOMAIN}"
+      --build-arg VITE_AUTH0_CLIENT_ID="${VITE_AUTH0_CLIENT_ID}"
       -t $DOCKER_IMAGE .
   only:
     - dev
