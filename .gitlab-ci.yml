@@ -10,9 +10,10 @@ build:
   tags:
     - frontend
   script:
-    - echo "VITE_AUTH0_DOMAIN=$VITE_AUTH0_DOMAIN"
-    - echo "VITE_AUTH0_CLIENT_ID=$VITE_AUTH0_CLIENT_ID"
-    - docker build -t $DOCKER_IMAGE .
+    - docker build
+      --build-arg VITE_AUTH0_DOMAIN=$VITE_AUTH0_DOMAIN
+      --build-arg VITE_AUTH0_CLIENT_ID=$VITE_AUTH0_CLIENT_ID
+      -t $DOCKER_IMAGE .
   only:
     - dev
 
