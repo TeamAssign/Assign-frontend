@@ -20,10 +20,6 @@ deploy:
     - frontend
   script:
     - docker rm -f react-app || true
-    - docker run -d \
-      -p 80:80 \
-      -p 443:443 \
-      -v /etc/letsencrypt:/etc/letsencrypt \
-      --name react-app $DOCKER_IMAGE
+    - docker run -d -p 80:80 -p 443:443 -v /etc/letsencrypt:/etc/letsencrypt --name react-app $DOCKER_IMAGE
   only:
     - dev
