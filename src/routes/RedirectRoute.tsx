@@ -27,14 +27,18 @@ export const ProtectedRoute = () => {
       if (isAuthenticated) {
         try {
           const claims = await getIdTokenClaims()
+          console.log('Claims:', claims)
           const isFirstLoginClaim = claims?.['https://back-end/isFirstLogin']
+          console.log('isFirstLogin value:', isFirstLoginClaim)
           setIsFirstLogin(isFirstLoginClaim)
         } catch (error) {
           console.error('토큰 클레임 확인 중 오류 발생:', error)
           setIsFirstLogin(false)
         }
+        setCheckingClaims(false)
+      } else {
+        setCheckingClaims(false)
       }
-      setCheckingClaims(false)
     }
 
     checkFirstLoginStatus()
@@ -44,12 +48,14 @@ export const ProtectedRoute = () => {
     return <div>Loading...</div>
   }
 
-  // 인증되지 않은 사용자는 로그인으로 현재는 반대로
+  if (isFirstLogin === null) {
+    return <div>Loading...</div>
+  }
+
   if (!isAuthenticated) {
     return <Navigate to='/signin' replace />
   }
 
-  // 현재 경로가 welcome인 경우 처리  현재는 반대로
   if (location.pathname === '/welcome') {
     if (!isFirstLogin) {
       return <Outlet />
