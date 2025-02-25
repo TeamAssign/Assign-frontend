@@ -1,13 +1,13 @@
-import { participant } from '@/types'
+import { Participant } from '@/types'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
 
 const useSearchMember = (
-  usersData: participant[],
-  participants: participant[] = [],
+  usersData: Participant[],
+  participants: Participant[] = [],
 ) => {
-  const [members, setMembers] = useState<participant[]>(participants)
+  const [members, setMembers] = useState<Participant[]>(participants)
   const [searchInput, setSearchInput] = useState('')
-  const [searchMemberList, setSearchMemberList] = useState<participant[]>([])
+  const [searchMemberList, setSearchMemberList] = useState<Participant[]>([])
   const [isOpenMemberDropDown, setIsOpenMemberDropDown] = useState(false)
   const ref = useRef<HTMLUListElement | null>(null)
 
