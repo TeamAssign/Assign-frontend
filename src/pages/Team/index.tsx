@@ -1,4 +1,5 @@
 import {
+  BarChart,
   Button,
   FeedProfileInfo,
   FeedReviewBar,
@@ -9,6 +10,7 @@ import {
 import { ProfileInfo } from '@/mocks/feedUserProfileData'
 import { teamReviewData } from '@/mocks/reviewData'
 import { teams } from '@/mocks/teamsData'
+import { teamStatsData } from '@/mocks/teamStatsData'
 import { PlusIcon } from 'lucide-react'
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -45,6 +47,10 @@ const Team = () => {
         pros={ProfileInfo.pros}
         cons={ProfileInfo.cons}
       />
+      <div className='flex flex-col gap-2'>
+        <span className='text-sub-2 font-bold text-title'>📊 팀 통계</span>
+        <BarChart menu={teamStatsData.menu} />
+      </div>
       <div className='w-full'>
         <div className='flex gap-4 items-center'>
           <span className='text-sub-2 font-bold text-title'>
