@@ -21,17 +21,19 @@ import { FOOD_CATEGORIES } from '@/constant'
 import useSearchMember from '@/hooks/useSearchMember'
 import { cn } from '@/lib/utils'
 import { usersData } from '@/mocks/usersData'
-import { participant } from '@/types'
+import { Participant } from '@/types'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 
 interface ReviewFormProps {
   isEditMember: boolean
   type?: string
   recommendationId?: number
   menu?: string
+  imgUrl?: string
+  comment?: string
   category?: string
-  participants?: participant[]
+  participants?: Participant[]
 }
 
 interface ReviewFormValues {
@@ -42,7 +44,7 @@ interface ReviewFormValues {
   comment: string
   category: string
   star: number
-  participants: participant[]
+  participants: Participant[]
 }
 
 const ReviewForm = ({
@@ -52,21 +54,22 @@ const ReviewForm = ({
   menu,
   participants,
   category,
+  comment,
+  imgUrl,
 }: ReviewFormProps) => {
-  const { register, handleSubmit, setValue, watch } = useForm<ReviewFormValues>(
-    {
+  const { register, handleSubmit, setValue, watch, control } =
+    useForm<ReviewFormValues>({
       defaultValues: {
         ...(recommendationId && { recommendationId }),
         type: type || '',
         menu: menu || '',
         reviewImg: null,
-        comment: '',
+        comment: comment || '',
         category: category || '',
         star: 0,
         participants: participants || [],
       },
-    },
-  )
+    })
 
   const {
     ref,
@@ -80,7 +83,7 @@ const ReviewForm = ({
   } = useSearchMember(usersData, participants)
 
   const fileInputRef = useRef<HTMLInputElement | null>(null)
-  const [previewImg, setPreviewImg] = useState<string | null>()
+  const [previewImg, setPreviewImg] = useState<string>(imgUrl || '')
 
   const rating = watch('star')
 
@@ -108,7 +111,7 @@ const ReviewForm = ({
       fileReader.readAsDataURL(imageFile)
       setValue('reviewImg', imageFile)
     } else {
-      setPreviewImg(null)
+      setPreviewImg('')
       setValue('reviewImg', null)
     }
   }
@@ -121,7 +124,17 @@ const ReviewForm = ({
       >
         <div className='flex flex-col gap-2'>
           <h1 className='text-sub-2 font-semibold'>식사 유형</h1>
-          <RadioGroups isEdit={isEditMember} defaultType={type} />
+          <Controller
+            name='type'
+            control={control}
+            render={({ field }) => (
+              <RadioGroups
+                isEdit={isEditMember}
+                defaultType={type}
+                onChange={field.onChange}
+              />
+            )}
+          />
         </div>
 
         <div className='flex flex-col gap-2'>
@@ -207,29 +220,35 @@ const ReviewForm = ({
 
         <div className='flex flex-col gap-2'>
           <h1 className='text-sub-2 font-semibold'>카테고리</h1>
-          <Select
-            disabled={!!category}
-            {...register('category')}
-            defaultValue={category}
-          >
-            <SelectTrigger className='w-[180px] border-[1px] border-dark-gray'>
-              <SelectValue placeholder='음식 카테고리를 설정해주세요' />
-            </SelectTrigger>
-            <SelectContent className='border-[1px] border-dark-gray bg-white z-50'>
-              <SelectGroup>
-                <SelectLabel>카테고리</SelectLabel>
-                {FOOD_CATEGORIES.map((category) => (
-                  <SelectItem
-                    className='text-main-black hover:bg-light-gray'
-                    key={category}
-                    value={category}
-                  >
-                    {category}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <Controller
+            name='category'
+            control={control}
+            render={({ field }) => (
+              <Select
+                disabled={!!category}
+                value={field.value}
+                onValueChange={field.onChange}
+              >
+                <SelectTrigger className='w-[180px] border-[1px] border-dark-gray'>
+                  <SelectValue placeholder='음식 카테고리를 설정해주세요' />
+                </SelectTrigger>
+                <SelectContent className='border-[1px] border-dark-gray bg-white z-50'>
+                  <SelectGroup>
+                    <SelectLabel>카테고리</SelectLabel>
+                    {FOOD_CATEGORIES.map((category) => (
+                      <SelectItem
+                        className='text-main-black hover:bg-light-gray'
+                        key={category}
+                        value={category}
+                      >
+                        {category}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            )}
+          />
         </div>
 
         <div className='flex flex-col gap-2'>
