@@ -10,3 +10,7 @@ export type FlavorValues = {
   spicy: number
   salty: number
 }
+
+export type ChartValues = {
+  [key: string]: number
+}
