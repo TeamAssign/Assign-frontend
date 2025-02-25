@@ -1,4 +1,5 @@
 export { default as Avatar } from '@/components/common/Avatar'
+export { default as PieChart } from '@/components/common/Chart/PieChart'
 export { default as FlavorStatItem } from '@/components/common/FlavorStatItem'
 export { default as Modal } from '@/components/common/Modal'
 export { default as RadioGroups } from '@/components/common/RadioGroups'
