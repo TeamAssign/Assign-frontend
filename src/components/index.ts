@@ -1,4 +1,5 @@
 export { default as Avatar } from '@/components/common/Avatar'
+export { default as BarChart } from '@/components/common/Chart/BarChart'
 export { default as FlavorStatItem } from '@/components/common/FlavorStatItem'
 export { default as Modal } from '@/components/common/Modal'
 export { default as RadioGroups } from '@/components/common/RadioGroups'
