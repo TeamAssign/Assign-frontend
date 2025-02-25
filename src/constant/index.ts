@@ -24,3 +24,12 @@ export const BAR_BORDER_COLORS = [
   'rgb(75, 192, 192)',
   'rgb(54, 162, 235)',
 ]
+
+export const PATH_VALUE = [
+  { path: '/', value: '점심 뭐먹지' },
+  { path: '/teams', value: '팀 피드' },
+  { path: '/recommendation', value: '메뉴 추천' },
+  { path: '/history', value: '추천 히스토리' },
+  { path: '/my', value: '내 피드' },
+  { path: '/selectmember', value: '함께 먹을 사람 선택' },
+]
