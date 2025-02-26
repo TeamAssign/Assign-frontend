@@ -1,4 +1,4 @@
-import { FOOD_CATEGORIES, PIE_CHART_COLORS } from '@/constant'
+import { PIE_CHART_COLORS } from '@/constant'
 import {
   ArcElement,
   Chart as ChartJS,
@@ -39,7 +39,7 @@ type PieChartOptions = ChartOptions<'pie'> & {
 }
 
 interface PieChartProps {
-  data: number[]
+  data: Record<string, number>
 }
 
 const options: PieChartOptions = {
@@ -81,6 +81,9 @@ const options: PieChartOptions = {
           0,
         )
         const percentage = Math.round(Number(value * 100) / Number(total))
+        if (percentage <= 3) {
+          return ''
+        }
         return percentage + '%'
       },
       font: {
@@ -96,11 +99,11 @@ const options: PieChartOptions = {
 
 const PieChart = ({ data }: PieChartProps) => {
   const PieChartData: FoodPreferenceData = {
-    labels: FOOD_CATEGORIES.map((category) => category),
+    labels: Object.keys(data),
     datasets: [
       {
         label: '음식 선호도',
-        data: data,
+        data: Object.values(data),
         backgroundColor: PIE_CHART_COLORS.map((color) => color),
         borderColor: PIE_CHART_COLORS.map((color) => color),
         borderWidth: 1,
