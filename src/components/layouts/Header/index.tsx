@@ -19,11 +19,11 @@ const Header = () => {
 
   return (
     <header className='fixed top-0 z-50 w-full max-w-[600px] p-3 h-14 bg-main'>
-      <div className='flex items-center gap-4 h-full w-full'>
+      <div className='flex items-center w-full h-full gap-4'>
         {headerContent?.path !== '/' && (
-          <BackIcon onClick={goBack} className='cursor-pointer rounded-full' />
+          <BackIcon onClick={goBack} className='rounded-full cursor-pointer' />
         )}
-        <span className='text-white text-title font-bold'>
+        <span className='font-bold text-white text-title'>
           {headerContent?.value}
         </span>
       </div>

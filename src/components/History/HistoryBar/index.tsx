@@ -44,7 +44,7 @@ const HistoryBar = ({
   }
 
   return (
-    <div className='w-full flex gap-6 p-4 shadow-md rounded-2xl'>
+    <div className='flex w-full gap-6 p-4 shadow-md rounded-2xl'>
       <div className='w-3/5 h-[132px]'>
         <img
           src={imgUrl}
@@ -61,7 +61,7 @@ const HistoryBar = ({
           <div className='font-bold'>{menu}</div>
           <div className='flex items-center gap-2 text-description text-main-black'>
             <span className='font-semibold'>💻 AI가 분석한 취향 적합률</span>
-            <span className='text-sub-2 text-subbody font-bold'>
+            <span className='font-bold text-sub-2 text-subbody'>
               {accuracy}%
             </span>
           </div>

@@ -27,3 +27,4 @@ export { default as AvatarExam } from '@/components/ui/avatarExam'
 export { default as Button } from '@/components/ui/button'
 export { default as Input } from '@/components/ui/input'
 export { default as TextArea } from '@/components/ui/textarea'
+
