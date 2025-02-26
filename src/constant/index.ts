@@ -9,6 +9,17 @@ export const FOOD_CATEGORIES = [
   '기타',
 ]
 
+export const PIE_CHART_COLORS = [
+  '#ffb3ba',
+  '#ffdfba',
+  '#ffffba',
+  '#baffc9',
+  '#bae1ff',
+  '#ffc3a0',
+  '#e1bae1',
+  '#d9d9d9',
+]
+
 export const BAR_BACKGROUND_COLORS = [
   'rgba(255, 99, 132, 0.2)',
   'rgba(255, 159, 64, 0.2)',
