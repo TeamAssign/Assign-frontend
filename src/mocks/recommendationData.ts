@@ -4,7 +4,7 @@ const recommendationData = [
     type: '같이 먹기',
     category: '중식',
     name: '짜장면',
-    reason: '맛있으니까',
+    accuracy: 78.4,
     imageUrl: 'https://github.com/shadcn.png',
     isReviewed: false,
     participants: [
@@ -27,7 +27,7 @@ const recommendationData = [
     type: '같이 먹기',
     category: '일식',
     name: '라멘',
-    reason: '얼큰한 국물이 생각날 때',
+    accuracy: 76.4,
     imageUrl: 'https://github.com/shadcn.png',
     isReviewed: true,
     participants: [
@@ -50,7 +50,7 @@ const recommendationData = [
     type: '회식',
     category: '한식',
     name: '삼겹살',
-    reason: '다같이 모여서 먹기 좋아요',
+    accuracy: 85.4,
     imageUrl: 'https://github.com/shadcn.png',
     isReviewed: false,
     participants: [
@@ -79,7 +79,7 @@ const recommendationData = [
     type: '같이 먹기',
     category: '양식',
     name: '파스타',
-    reason: '분위기 좋은 곳에서 특별한 날에',
+    accuracy: 87.4,
     imageUrl: 'https://github.com/shadcn.png',
     isReviewed: true,
     participants: [
@@ -102,7 +102,7 @@ const recommendationData = [
     type: '같이 먹기',
     category: '한식',
     name: '국밥',
-    reason: '해장하기 좋아요',
+    accuracy: 78.4,
     imageUrl: 'https://github.com/shadcn.png',
     isReviewed: false,
     participants: [
@@ -125,7 +125,7 @@ const recommendationData = [
     type: '회식',
     category: '양식',
     name: '치킨',
-    reason: '다양한 맛으로 모두가 만족',
+    accuracy: 78.4,
     imageUrl: 'https://github.com/shadcn.png',
     isReviewed: true,
     participants: [
@@ -148,7 +148,7 @@ const recommendationData = [
     type: '혼밥 먹기',
     category: '일식',
     name: '덮밥',
-    reason: '간편하게 한 그릇으로 배부르게',
+    accuracy: 78.4,
     imageUrl: 'https://github.com/shadcn.png',
     isReviewed: false,
     participants: [
@@ -177,7 +177,7 @@ const recommendationData = [
     type: '혼밥 먹기',
     category: '양식',
     name: '피자',
-    reason: '다같이 나눠먹기 좋아요',
+    accuracy: 78.4,
     imageUrl: 'https://github.com/shadcn.png',
     isReviewed: true,
     participants: [
@@ -194,7 +194,7 @@ const recommendationData = [
     type: '혼밥 먹기',
     category: '한식',
     name: '김밥',
-    reason: '빠르게 먹기 좋은 한 끼',
+    accuracy: 78.4,
     imageUrl: 'https://github.com/shadcn.png',
     isReviewed: false,
     participants: [
@@ -211,8 +211,7 @@ const recommendationData = [
     type: '같이 먹기',
     category: '한식',
     name: '한정식',
-    reason:
-      '정성이 담긴 건강한 한 끼 리뷰가 엄청 길어진다면 어떻게 될까? 한번 확인해보자. 맛있는 음식을 먹고 싶다',
+    accuracy: 78.4,
     imageUrl: 'https://github.com/shadcn.png',
     isReviewed: false,
     participants: [
