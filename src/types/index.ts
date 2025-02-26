@@ -14,3 +14,11 @@ export type FlavorValues = {
 export type ChartValues = {
   [key: string]: number
 }
+
+export type MenuStoreValues = {
+  placeName: string
+  distance: number
+  roadAddressName: string
+  placeUrl: string
+  imageUrl: string
+}
