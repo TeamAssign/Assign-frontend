@@ -45,7 +45,7 @@ const FeedReviewBar = ({
   }
 
   return (
-    <div className='w-full flex gap-6 p-4 shadow-md rounded-2xl'>
+    <div className='flex w-full gap-6 p-4 shadow-md rounded-2xl'>
       <div className='w-3/5 h-[162px]'>
         <img
           src={imgUrl}
@@ -72,7 +72,7 @@ const FeedReviewBar = ({
             <p
               ref={commentRef}
               className={cn(
-                'pr-2 text-description',
+                'pr-3 text-description',
                 !isCommentExpanded && 'line-clamp-1',
               )}
               onClick={needsExpansion ? toggleComment : undefined}
@@ -81,7 +81,7 @@ const FeedReviewBar = ({
             </p>
 
             {needsExpansion && (
-              <button className='absolute top-0 right-0 flex items-center ml-2 text-sm font-medium text-gray-500'>
+              <button className='absolute top-0 right-0 flex items-center font-medium text-gray-500 text-subody'>
                 <span>{isCommentExpanded ? '▲' : '▼'}</span>
               </button>
             )}
