@@ -1,3 +1,4 @@
+import { Loader } from '@/components'
 import { useAuth0 } from '@auth0/auth0-react'
 import { useEffect, useState } from 'react'
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
@@ -6,7 +7,11 @@ export const PublicRoute = () => {
   const { isAuthenticated, isLoading } = useAuth0()
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return (
+      <div className='flex items-center justify-center w-screen h-screen'>
+        <Loader />
+      </div>
+    )
   }
 
   if (isAuthenticated) {
@@ -43,11 +48,19 @@ export const ProtectedRoute = () => {
   }, [isAuthenticated, getIdTokenClaims])
 
   if (isLoading || checkingClaims) {
-    return <div>Loading...</div>
+    return (
+      <div className='flex items-center justify-center w-screen h-screen'>
+        <Loader />
+      </div>
+    )
   }
 
   if (isFirstLogin === null && isAuthenticated) {
-    return <div>Loading...</div>
+    return (
+      <div className='flex items-center justify-center w-screen h-screen'>
+        <Loader />
+      </div>
+    )
   }
 
   if (!isAuthenticated) {
