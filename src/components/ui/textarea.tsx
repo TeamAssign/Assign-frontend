@@ -43,7 +43,7 @@ const Textarea = ({
   return (
     <textarea
       className={cn(
-        'flex min-h-[80px] w-full rounded-md border border-[#E4E4E7] px-3 py-2 text-base resize-none',
+        'flex min-h-[80px] w-full rounded-md border border-[#E4E4E7] px-3 py-2 text-body resize-none',
         className,
         sizeClasses[size],
       )}
