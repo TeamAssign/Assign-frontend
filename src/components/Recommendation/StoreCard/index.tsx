@@ -18,15 +18,15 @@ const StoreCard = ({
         <img
           src={imageUrl}
           alt={`${placeName} 이미지`}
-          className='w-full h-28 object-cover'
+          className='object-cover w-full h-28'
         />
       </div>
-      <div className='px-2 py-2 flex flex-col'>
-        <span className='text-sm font-semibold truncate'>{placeName}</span>
-        <span className='text-xs text-gray-500 truncate'>
+      <div className='flex flex-col px-2 py-2'>
+        <span className='font-semibold truncate text-subbody'>{placeName}</span>
+        <span className='text-gray-500 truncate text-description'>
           {roadAddressName}
         </span>
-        <span className='text-xs text-gray-400'>근처 {distance}m</span>
+        <span className='text-gray-400 text-description'>근처 {distance}m</span>
       </div>
     </a>
   )

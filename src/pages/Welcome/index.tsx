@@ -77,7 +77,7 @@ const Welcome = () => {
                 <div className='space-y-2'>
                   <Input {...field} placeholder='홍길동' className='w-full' />
                   {errors.name && (
-                    <p className='text-sm text-red-500'>
+                    <p className='text-subbody text-red-500'>
                       {errors.name.message}
                     </p>
                   )}
@@ -103,7 +103,7 @@ const Welcome = () => {
                     defaultValue={field.value}
                   />
                   {errors.team && (
-                    <p className='text-sm text-red-500'>
+                    <p className='text-subbody text-red-500'>
                       {errors.team.message}
                     </p>
                   )}
@@ -180,11 +180,11 @@ const Welcome = () => {
                         <TextArea {...field} className='w-full' />
                         <div className='flex justify-between'>
                           {errors.likes && (
-                            <p className='text-sm text-red-500'>
+                            <p className='text-subbody text-red-500'>
                               {errors.likes.message}
                             </p>
                           )}
-                          <span className={`text-sm`}>
+                          <span className={`text-subbody`}>
                             {currentLength}/100자
                           </span>
                         </div>
@@ -207,11 +207,11 @@ const Welcome = () => {
                         <TextArea {...field} className='w-full' />
                         <div className='flex justify-between'>
                           {errors.dislikes && (
-                            <p className='text-sm text-red-500'>
+                            <p className='text-subbody text-red-500'>
                               {errors.dislikes.message}
                             </p>
                           )}
-                          <span className={`text-sm`}>
+                          <span className={`text-subbody`}>
                             {currentLength}/100자
                           </span>
                         </div>

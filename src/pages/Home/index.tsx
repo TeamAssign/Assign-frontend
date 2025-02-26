@@ -2,6 +2,7 @@ import CalendarIcon from '@/assets/icons/CalendarIcon.svg?react'
 import SoloIcon from '@/assets/icons/SoloIcon.svg?react'
 import TogetherIcon from '@/assets/icons/TogetherIcon.svg?react'
 import { homeStatsData } from '@/mocks/homeStatsData'
+import { preferenceData } from '@/mocks/preferenceData'
 
 import {
   Button,
@@ -35,14 +36,14 @@ const Home = () => {
       </div>
 
       <div className='flex flex-col gap-1'>
-        <h1 className='py-1 text-xl font-bold'>
+        <h1 className='py-1 font-bold text-title'>
           🍽️ 직원들이 가장 선호하는 음식 종류는 무엇일까요?
         </h1>
         <PieChart data={homeStatsData} />
       </div>
       <div className='flex flex-col gap-1 pb-4'>
         <div className='flex flex-col gap-2 pb-4'>
-          <h1 className='text-xl font-bold'>메뉴 추천</h1>
+          <h1 className='font-bold text-title'>메뉴 추천</h1>
           <h2 className='text-lg text-dark-gray'>
             오늘은 이런 메뉴는 어떠세요?
           </h2>
@@ -54,17 +55,16 @@ const Home = () => {
       </div>
       <div className='flex flex-col gap-1 py-4'>
         <div className='flex flex-col gap-2 pb-4'>
-          <h1 className='text-xl font-bold'>나의 취향 분석</h1>
+          <h1 className='font-bold text-title'>나의 취향 분석</h1>
           <h2 className='text-lg text-dark-gray'>
             AI가 분석한 취향 데이터입니다.
           </h2>
         </div>
-
         <PreferenceBar
-          price='1~2만원'
-          keyword={['가성비']}
-          accuracy={92.0}
-          accuracyBefore={86.8}
+          price={preferenceData.price}
+          keyword={preferenceData.keyword}
+          accuracy={preferenceData.accuracy}
+          accuracyBefore={preferenceData.accuracyBefore}
         />
       </div>
     </div>

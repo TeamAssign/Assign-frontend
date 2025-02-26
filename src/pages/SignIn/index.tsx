@@ -17,7 +17,9 @@ const SignIn = () => {
       <div className='flex flex-col items-center justify-center min-h-screen p-4 bg-orange-50'>
         <div className='w-full max-w-md p-6 text-center bg-white rounded-lg shadow-lg'>
           <div className='mb-4 text-5xl text-red-500'>😕</div>
-          <h2 className='mb-2 text-xl font-bold text-gray-800'>로그인 오류</h2>
+          <h2 className='mb-2 font-bold text-gray-800 text-title'>
+            로그인 오류
+          </h2>
           <p className='mb-4 text-gray-600'>{error.message}</p>
           <button
             onClick={() => window.location.reload()}
@@ -58,7 +60,9 @@ const SignIn = () => {
               <div className='w-full border-t border-gray-300'></div>
             </div>
             <div className='relative flex justify-center'>
-              <span className='px-2 text-sm text-gray-500 bg-white'>또는</span>
+              <span className='px-2 text-gray-500 bg-white text-subbody'>
+                또는
+              </span>
             </div>
           </div>
 
@@ -78,7 +82,7 @@ const SignIn = () => {
         </div>
       </div>
 
-      <p className='mt-6 text-sm text-gray-500'>&copy; 2025 점심 뭐먹지</p>
+      <p className='mt-6 text-gray-500 text-subbody'>&copy; 2025 점심 뭐먹지</p>
     </div>
   )
 }
