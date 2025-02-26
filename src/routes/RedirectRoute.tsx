@@ -35,10 +35,8 @@ export const ProtectedRoute = () => {
           console.error('토큰 클레임 확인 중 오류 발생:', error)
           setIsFirstLogin(false)
         }
-        setCheckingClaims(false)
-      } else {
-        setCheckingClaims(false)
       }
+      setCheckingClaims(false)
     }
 
     checkFirstLoginStatus()
@@ -48,7 +46,7 @@ export const ProtectedRoute = () => {
     return <div>Loading...</div>
   }
 
-  if (isFirstLogin === null) {
+  if (isFirstLogin === null && isAuthenticated) {
     return <div>Loading...</div>
   }
 
