@@ -16,7 +16,7 @@ const Tag = ({ color, children }: TagProps) => {
   return (
     <div
       className={cn(
-        'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium',
+        'inline-flex items-center px-2 py-1 rounded-full text-xs font-medium',
         colorClass[color],
       )}
     >

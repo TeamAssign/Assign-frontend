@@ -1,5 +1,5 @@
 import { Button, Modal, ReviewForm, Tag } from '@/components'
-import { participant } from '@/types'
+import { Participant } from '@/types'
 import { useEffect, useRef, useState } from 'react'
 
 interface HistoryBarProps {
@@ -10,7 +10,7 @@ interface HistoryBarProps {
   menu: string
   comment: string
   isReviewed: boolean
-  participants: participant[]
+  participants: Participant[]
 }
 
 /**

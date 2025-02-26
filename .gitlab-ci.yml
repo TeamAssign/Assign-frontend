@@ -1,0 +1,28 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  DOCKER_IMAGE: react-image
+
+build:
+  stage: build
+  tags:
+    - frontend
+  script:
+    - docker build
+      --build-arg VITE_AUTH0_DOMAIN="$VITE_AUTH0_DOMAIN"
+      --build-arg VITE_AUTH0_CLIENT_ID="$VITE_AUTH0_CLIENT_ID"
+      -t $DOCKER_IMAGE .
+  only:
+    - dev
+
+deploy:
+  stage: deploy
+  tags:
+    - frontend
+  script:
+    - docker rm -f react-app || true
+    - docker run -d -p 3000:80 --name react-app $DOCKER_IMAGE
+  only:
+    - dev
