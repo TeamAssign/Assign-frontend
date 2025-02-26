@@ -1,4 +1,5 @@
 import { Button, Modal, ReviewForm, Tag } from '@/components'
+import { cn } from '@/lib/utils'
 import { Participant } from '@/types'
 import { useEffect, useRef, useState } from 'react'
 
@@ -67,20 +68,20 @@ const FeedReviewBar = ({
               </span>
             ))}
           </div>
-          <div
-            className='relative mt-1'
-            style={{ cursor: needsExpansion ? 'pointer' : 'default' }}
-          >
+          <div className={cn('relative', needsExpansion && 'cursor-pointer')}>
             <p
               ref={commentRef}
-              className={!isCommentExpanded ? 'line-clamp-1 pr-2' : 'pr-2'}
+              className={cn(
+                'pr-2 text-description',
+                !isCommentExpanded && 'line-clamp-1',
+              )}
               onClick={needsExpansion ? toggleComment : undefined}
             >
               {comment}
             </p>
 
             {needsExpansion && (
-              <button className='absolute bottom-0 right-0 flex items-center ml-2 text-sm font-medium text-gray-500'>
+              <button className='absolute top-0 right-0 flex items-center ml-2 text-sm font-medium text-gray-500'>
                 <span>{isCommentExpanded ? '▲' : '▼'}</span>
               </button>
             )}
