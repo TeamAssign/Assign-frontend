@@ -38,24 +38,18 @@ type PieChartOptions = ChartOptions<'pie'> & {
   }
 }
 
-const data: FoodPreferenceData = {
-  labels: FOOD_CATEGORIES.map((category) => category),
-  datasets: [
-    {
-      label: '음식 선호도',
-      data: [12, 19, 3, 5, 2, 3, 7, 4],
-      backgroundColor: PIE_CHART_COLORS.map((color) => color),
-      borderColor: PIE_CHART_COLORS.map((color) => color),
-      borderWidth: 1,
-    },
-  ],
+interface PieChartProps {
+  data: number[]
 }
 
 const options: PieChartOptions = {
   radius: '100%',
+  responsive: true,
+  maintainAspectRatio: true,
+  cutout: '0%',
   plugins: {
     legend: {
-      position: 'right',
+      position: window.innerWidth < 400 ? 'top' : 'right',
       labels: {
         font: {
           size: 14,
@@ -100,11 +94,23 @@ const options: PieChartOptions = {
   },
 }
 
-const PieChart = () => {
+const PieChart = ({ data }: PieChartProps) => {
+  const PieChartData: FoodPreferenceData = {
+    labels: FOOD_CATEGORIES.map((category) => category),
+    datasets: [
+      {
+        label: '음식 선호도',
+        data: data,
+        backgroundColor: PIE_CHART_COLORS.map((color) => color),
+        borderColor: PIE_CHART_COLORS.map((color) => color),
+        borderWidth: 1,
+      },
+    ],
+  }
   return (
-    <div className='text-center'>
-      <div className='relative w-4/5 mx-auto md:w-3/4 lg:w-2/3 h-96'>
-        <Pie data={data} options={options} />
+    <div className='w-3/4 mx-auto'>
+      <div className='relative aspect-square'>
+        <Pie data={PieChartData} options={options} />
       </div>
     </div>
   )
