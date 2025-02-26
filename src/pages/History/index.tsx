@@ -15,7 +15,7 @@ const History = () => {
           category={item.category}
           type={item.type}
           menu={item.name}
-          comment={item.reason}
+          accuracy={item.accuracy}
           isReviewed={item.isReviewed}
           participants={item.participants}
         />

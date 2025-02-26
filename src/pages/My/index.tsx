@@ -3,9 +3,11 @@ import {
   FeedProfileInfo,
   FeedReviewBar,
   Modal,
+  PieChart,
   ReviewForm,
 } from '@/components'
 import { ProfileInfo } from '@/mocks/feedUserProfileData'
+import { personStatsData } from '@/mocks/personStatsData'
 import { reviewData } from '@/mocks/reviewData'
 import { PlusIcon } from 'lucide-react'
 import { useState } from 'react'
@@ -24,6 +26,10 @@ const My = () => {
         pros={ProfileInfo.pros}
         cons={ProfileInfo.cons}
       />
+      <div className='flex flex-col gap-2'>
+        <span className='text-sub-2 font-bold text-title'>📊 내 통계</span>
+        <PieChart data={personStatsData} />
+      </div>
       <div className='w-full'>
         <div className='flex gap-4 items-center'>
           <span className='text-sub-2 font-bold text-title'>

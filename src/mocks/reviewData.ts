@@ -5,7 +5,8 @@ export const reviewData = [
     category: '중식',
     type: '혼밥 먹기',
     menu: '짜장면',
-    comment: '면이 쫄깃하고 소스가 진해요',
+    comment:
+      '면이 쫄깃하고 소스가 진해요 다음에도 또 가고 싶어요 너무너무 맛있었습니다. 짜장면의 윤기가 좔좔 흘러요',
     star: 4,
     isRecommendation: true,
     participants: [
