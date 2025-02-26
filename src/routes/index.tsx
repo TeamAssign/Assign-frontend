@@ -5,10 +5,10 @@ import My from '@/pages/My'
 import Recommendation from '@/pages/Recommendation'
 import SelectMember from '@/pages/SelectMember'
 import SignIn from '@/pages/SignIn'
-import SignUp from '@/pages/SignUp'
 import Team from '@/pages/Team'
 import Welcome from '@/pages/Welcome'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
+import { ProtectedRoute, PublicRoute } from './RedirectRoute'
 
 export const Routes = () => {
   return <RouterProvider router={router} />
@@ -16,23 +16,38 @@ export const Routes = () => {
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    element: <Layout />,
+    element: <ProtectedRoute />,
     children: [
-      { index: true, element: <Home /> },
-      { path: '/history', element: <History /> },
-      { path: '/my', element: <My /> },
-      { path: '/teams/:teamId', element: <Team /> },
-      { path: '/recommendation', element: <Recommendation /> },
-      { path: '/selectmember', element: <SelectMember /> },
+      {
+        path: '/',
+        element: <Navigate to='/' replace />,
+      },
+      {
+        path: '/welcome',
+        element: <SimpleLayout />,
+        children: [{ index: true, element: <Welcome /> }],
+      },
+      {
+        path: '/',
+        element: <Layout />,
+        children: [
+          { index: true, element: <Home /> },
+          { path: '/history', element: <History /> },
+          { path: '/my', element: <My /> },
+          { path: '/teams/:teamId', element: <Team /> },
+          { path: '/recommendation', element: <Recommendation /> },
+          { path: '/selectmember', element: <SelectMember /> },
+        ],
+      },
     ],
   },
   {
-    element: <SimpleLayout />,
+    element: <PublicRoute />,
     children: [
-      { path: '/signin', element: <SignIn /> },
-      { path: '/signup', element: <SignUp /> },
-      { path: '/welcome', element: <Welcome /> },
+      {
+        element: <SimpleLayout />,
+        children: [{ path: '/signin', element: <SignIn /> }],
+      },
     ],
   },
 ])

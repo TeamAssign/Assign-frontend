@@ -50,11 +50,13 @@ const Avatar = ({ imgUrl, text, name, department }: AvatarProps) => {
         <AvatarImage src={imgUrl} />
         <AvatarFallback>{text}</AvatarFallback>
       </AvatarExam>
-      {name && <div className='pt-2 font-semibold text-center'>{name}</div>}
-      {department && (
-        <div className='text-gray-500 text-subbody text-desciption'>
-          {department}
+      {name && (
+        <div className='pt-2 font-semibold text-center text-description'>
+          {name}
         </div>
+      )}
+      {department && (
+        <div className='text-gray-500 text-description'>{department}</div>
       )}
     </div>
   )
