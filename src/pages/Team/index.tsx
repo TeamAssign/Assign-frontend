@@ -4,6 +4,7 @@ import {
   FeedProfileInfo,
   FeedReviewBar,
   Modal,
+  PieChart,
   ReviewForm,
   SelectBox,
 } from '@/components'
@@ -49,6 +50,7 @@ const Team = () => {
       />
       <div className='flex flex-col gap-2'>
         <span className='text-sub-2 font-bold text-title'>📊 팀 통계</span>
+        <PieChart data={teamStatsData.categories} />
         <BarChart menu={teamStatsData.menu} />
       </div>
       <div className='w-full'>
