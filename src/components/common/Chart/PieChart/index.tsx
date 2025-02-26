@@ -49,7 +49,7 @@ const options: PieChartOptions = {
   cutout: '0%',
   plugins: {
     legend: {
-      position: window.innerWidth < 400 ? 'top' : 'right',
+      position: window.innerWidth < 460 ? 'top' : 'right',
       labels: {
         font: {
           size: 14,
