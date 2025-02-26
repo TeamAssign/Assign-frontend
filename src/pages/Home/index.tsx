@@ -1,6 +1,7 @@
 import CalendarIcon from '@/assets/icons/CalendarIcon.svg?react'
 import SoloIcon from '@/assets/icons/SoloIcon.svg?react'
 import TogetherIcon from '@/assets/icons/TogetherIcon.svg?react'
+import { homeStatsData } from '@/mocks/homeStatsData'
 
 import {
   Button,
@@ -37,7 +38,7 @@ const Home = () => {
         <h1 className='py-1 text-xl font-bold'>
           🍽️ 직원들이 가장 선호하는 음식 종류는 무엇일까요?
         </h1>
-        <PieChart data={[12, 19, 3, 5, 2, 3, 7, 4]} />
+        <PieChart data={homeStatsData} />
       </div>
       <div className='flex flex-col gap-1 pb-4'>
         <div className='flex flex-col gap-2 pb-4'>
