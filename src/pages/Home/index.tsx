@@ -2,6 +2,7 @@ import CalendarIcon from '@/assets/icons/CalendarIcon.svg?react'
 import SoloIcon from '@/assets/icons/SoloIcon.svg?react'
 import TogetherIcon from '@/assets/icons/TogetherIcon.svg?react'
 import { homeStatsData } from '@/mocks/homeStatsData'
+import { preferenceData } from '@/mocks/preferenceData'
 
 import {
   Button,
@@ -59,12 +60,11 @@ const Home = () => {
             AI가 분석한 취향 데이터입니다.
           </h2>
         </div>
-
         <PreferenceBar
-          price='1~2만원'
-          keyword={['가성비']}
-          accuracy={92.0}
-          accuracyBefore={86.8}
+          price={preferenceData.price}
+          keyword={preferenceData.keyword}
+          accuracy={preferenceData.accuracy}
+          accuracyBefore={preferenceData.accuracyBefore}
         />
       </div>
     </div>
