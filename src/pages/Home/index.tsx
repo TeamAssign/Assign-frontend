@@ -10,24 +10,38 @@ import {
   PreferenceBar,
   RecommendationBar,
 } from '@/components'
+import { useNavigate } from 'react-router-dom'
 
 const Home = () => {
+  const navigate = useNavigate()
   return (
     <div className='p-4'>
       <div className='grid grid-cols-3 gap-3 pb-8'>
-        <Button variant='white' size='lg'>
+        <Button
+          variant='white'
+          size='lg'
+          onClick={() => navigate('/recommendation')}
+        >
           <div className='flex items-center gap-2'>
             <SoloIcon />
             <p>혼자 먹기</p>
           </div>
         </Button>
-        <Button variant='white' size='lg'>
+        <Button
+          variant='white'
+          size='lg'
+          onClick={() => navigate('/selectmember/together')}
+        >
           <div className='flex items-center gap-2'>
             <TogetherIcon />
             <p>같이 먹기</p>
           </div>
         </Button>
-        <Button variant='white' size='lg'>
+        <Button
+          variant='white'
+          size='lg'
+          onClick={() => navigate('/selectmember/team')}
+        >
           <div className='flex items-center gap-2'>
             <CalendarIcon />
             <p>회식 하기</p>

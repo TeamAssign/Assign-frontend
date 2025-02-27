@@ -36,7 +36,7 @@ const router = createBrowserRouter([
           { path: '/my', element: <My /> },
           { path: '/teams/:teamId', element: <Team /> },
           { path: '/recommendation', element: <Recommendation /> },
-          { path: '/selectmember', element: <SelectMember /> },
+          { path: '/selectmember/:type', element: <SelectMember /> },
         ],
       },
     ],

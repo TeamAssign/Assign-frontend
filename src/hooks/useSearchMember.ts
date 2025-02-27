@@ -52,6 +52,20 @@ const useSearchMember = (
     }
   }
 
+  const toggleMember = (id: number) => {
+    const user = usersData.find((user) => user.id === id)
+    if (!user) return
+
+    setMembers((prevMembers) => {
+      const isContained = prevMembers.some((member) => member.id === id)
+      if (isContained) {
+        return prevMembers.filter((member) => member.id !== id)
+      } else {
+        return [...prevMembers, user]
+      }
+    })
+  }
+
   const handleDeleteMember = (id: number) => {
     setMembers((prev) => prev.filter((member) => member.id !== id))
   }
@@ -65,6 +79,7 @@ const useSearchMember = (
     handleMemberInputChange,
     handleSelectMember,
     handleDeleteMember,
+    toggleMember,
   }
 }
 
