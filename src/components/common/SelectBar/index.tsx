@@ -5,6 +5,9 @@ interface SelectBarProps {
   name: string
   department: string
   text: string
+  id: number
+  onClick: (id: number) => void
+  isSelected?: boolean // 선택 상태를 나타내는 prop 추가
 }
 
 /**
@@ -15,6 +18,9 @@ interface SelectBarProps {
  * @param {string} props.name - 사용자 이름
  * @param {string} props.department - 사용자 부서명
  * @param {string} props.text - 이미지가 없을 경우 표시될 대체 텍스트
+ * @param {number} props.id - 사용자 ID
+ * @param {function} props.onClick - ID를 인자로 받는 클릭 핸들러 함수
+ * @param {boolean} [props.isSelected] - 체크박스 선택 상태 (기본값: false)
  *
  * @example
  * const UserSelectionSection = () => {
@@ -34,10 +40,13 @@ interface SelectBarProps {
  *       {users.map(user => (
  *         <SelectBar
  *           key={user.id}
+ *           id={user.id}
  *           imgUrl={user.profileImage}
  *           name={user.fullName}
  *           department={user.departmentName}
  *           text={user.initials}
+ *           onClick={handleUserSelect}
+ *           isSelected={selectedUsers.includes(user.id)}
  *         />
  *       ))}
  *     </div>
@@ -50,15 +59,29 @@ interface SelectBarProps {
  * - 전체 영역 클릭 시 체크박스 토글 가능
  */
 
-const SelectBar = ({ imgUrl, name, department, text }: SelectBarProps) => {
+const SelectBar = ({
+  imgUrl,
+  name,
+  department,
+  text,
+  id,
+  onClick,
+  isSelected = false, // 기본값은 false
+}: SelectBarProps) => {
   return (
-    <label className='flex items-center justify-between py-2 border-b border-gray-200'>
+    <label
+      className='flex items-center justify-between py-2 border-b border-gray-200'
+      onClick={(e) => {
+        e.preventDefault() // 기본 동작 방지
+        onClick(id)
+      }}
+    >
       <div className='flex items-center gap-2'>
         <Avatar imgUrl={imgUrl} text={text} />
         <div className='font-semibold'>{name}</div>
         <div className='text-gray-500'>{department}</div>
       </div>
-      <input type='checkbox' />
+      <input type='checkbox' checked={isSelected} />
     </label>
   )
 }
