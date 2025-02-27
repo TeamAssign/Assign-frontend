@@ -1,3 +1,4 @@
+import usePostUser from '@/apis/user/usePostUser'
 import {
   Button,
   FlavorStatItem,
@@ -16,18 +17,18 @@ const teamList = [
 ]
 // zod 스키마 정의
 const welcomeSchema = z.object({
-  name: z.string().min(1, { message: '이름을 입력해주세요' }),
-  team: z.string().min(1, { message: '팀을 선택해주세요' }),
-  flavors: z.object({
-    sweet: z.number().min(0).max(5),
-    salty: z.number().min(0).max(5),
-    spicy: z.number().min(0).max(5),
-  }),
-  likes: z
+  userName: z.string().min(1, { message: '이름을 입력해주세요' }),
+  teamName: z.string().min(1, { message: '팀을 선택해주세요' }),
+
+  sweet: z.number().min(0).max(5),
+  salty: z.number().min(0).max(5),
+  spicy: z.number().min(0).max(5),
+
+  pros: z
     .string()
     .min(15, { message: '15자 이상 입력해주세요' })
     .max(100, { message: '100자 이내로 입력해주세요' }),
-  dislikes: z
+  cons: z
     .string()
     .min(15, { message: '15자 이상 입력해주세요' })
     .max(100, { message: '100자 이내로 입력해주세요' }),
@@ -42,21 +43,27 @@ const Welcome = () => {
     formState: { errors },
   } = useForm<WelcomeFormValues>({
     defaultValues: {
-      name: '',
-      team: '',
-      flavors: {
-        sweet: 0,
-        spicy: 0,
-        salty: 0,
-      },
-      likes: '',
-      dislikes: '',
+      userName: '',
+      teamName: '',
+      sweet: 0,
+      spicy: 0,
+      salty: 0,
+      pros: '',
+      cons: '',
     },
     resolver: zodResolver(welcomeSchema),
   })
 
+  const { mutate } = usePostUser()
+
   const onSubmit = handleSubmit((data) => {
-    console.log(data)
+    console.log('Form data:', data)
+    try {
+      console.log('API 호출 성공')
+      mutate(data)
+    } catch (error) {
+      console.error('API 호출 실패:', error)
+    }
   })
 
   return (
@@ -71,14 +78,14 @@ const Welcome = () => {
               이름을 입력해주세요
             </p>
             <Controller
-              name='name'
+              name='userName'
               control={control}
               render={({ field }) => (
                 <div className='space-y-2'>
                   <Input {...field} placeholder='홍길동' className='w-full' />
-                  {errors.name && (
-                    <p className='text-subbody text-red-500'>
-                      {errors.name.message}
+                  {errors.userName && (
+                    <p className='text-red-500 text-subbody'>
+                      {errors.userName.message}
                     </p>
                   )}
                 </div>
@@ -91,7 +98,7 @@ const Welcome = () => {
               본인이 속한 팀을 선택해주세요
             </p>
             <Controller
-              name='team'
+              name='teamName'
               control={control}
               render={({ field }) => (
                 <div className='space-y-2'>
@@ -102,9 +109,9 @@ const Welcome = () => {
                     onChange={field.onChange}
                     defaultValue={field.value}
                   />
-                  {errors.team && (
-                    <p className='text-subbody text-red-500'>
-                      {errors.team.message}
+                  {errors.teamName && (
+                    <p className='text-red-500 text-subbody'>
+                      {errors.teamName.message}
                     </p>
                   )}
                 </div>
@@ -116,48 +123,44 @@ const Welcome = () => {
             <p className='pb-5 text-lg font-medium text-gray-700'>
               음식 성향에 대해 이야기 해주세요!
             </p>
-
-            <Controller
-              name='flavors'
-              control={control}
-              render={({ field }) => (
-                <div className='space-y-6'>
+            <div className='space-y-6'>
+              <Controller
+                name='sweet'
+                control={control}
+                render={({ field }) => (
                   <FlavorStatItem
-                    defaultValue={field.value.sweet}
+                    defaultValue={field.value}
                     type='sweet'
                     label='단 맛'
-                    onValueChange={(type, value) => {
-                      field.onChange({
-                        ...field.value,
-                        [type]: value,
-                      })
-                    }}
+                    onValueChange={(_, value) => field.onChange(value)}
                   />
+                )}
+              />
+              <Controller
+                name='salty'
+                control={control}
+                render={({ field }) => (
                   <FlavorStatItem
-                    defaultValue={field.value.salty}
+                    defaultValue={field.value}
                     type='salty'
                     label='짠 맛'
-                    onValueChange={(type, value) => {
-                      field.onChange({
-                        ...field.value,
-                        [type]: value,
-                      })
-                    }}
+                    onValueChange={(_, value) => field.onChange(value)}
                   />
+                )}
+              />
+              <Controller
+                name='spicy'
+                control={control}
+                render={({ field }) => (
                   <FlavorStatItem
-                    defaultValue={field.value.spicy}
+                    defaultValue={field.value}
                     type='spicy'
                     label='매운 맛'
-                    onValueChange={(type, value) => {
-                      field.onChange({
-                        ...field.value,
-                        [type]: value,
-                      })
-                    }}
+                    onValueChange={(_, value) => field.onChange(value)}
                   />
-                </div>
-              )}
-            />
+                )}
+              />
+            </div>
           </div>
 
           <div className='p-6 bg-white rounded-lg'>
@@ -171,7 +174,7 @@ const Welcome = () => {
                   이 점은 좋아요
                 </p>
                 <Controller
-                  name='likes'
+                  name='pros'
                   control={control}
                   render={({ field }) => {
                     const currentLength = field.value.length
@@ -179,9 +182,9 @@ const Welcome = () => {
                       <div className='space-y-2'>
                         <TextArea {...field} className='w-full' />
                         <div className='flex justify-between'>
-                          {errors.likes && (
-                            <p className='text-subbody text-red-500'>
-                              {errors.likes.message}
+                          {errors.pros && (
+                            <p className='text-red-500 text-subbody'>
+                              {errors.pros.message}
                             </p>
                           )}
                           <span className={`text-subbody`}>
@@ -198,7 +201,7 @@ const Welcome = () => {
                   이 점은 싫어요
                 </p>
                 <Controller
-                  name='dislikes'
+                  name='cons'
                   control={control}
                   render={({ field }) => {
                     const currentLength = field.value.length
@@ -206,9 +209,9 @@ const Welcome = () => {
                       <div className='space-y-2'>
                         <TextArea {...field} className='w-full' />
                         <div className='flex justify-between'>
-                          {errors.dislikes && (
-                            <p className='text-subbody text-red-500'>
-                              {errors.dislikes.message}
+                          {errors.cons && (
+                            <p className='text-red-500 text-subbody'>
+                              {errors.cons.message}
                             </p>
                           )}
                           <span className={`text-subbody`}>
