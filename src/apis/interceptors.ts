@@ -1,16 +1,27 @@
 import { axiosInstance } from '@/apis/axiosInstance'
 import { AxiosError, AxiosResponse } from 'axios'
 
-axiosInstance.interceptors.request.use((config) => {
-  // 토큰을 가져오는 로직 필요함
-  const token = ''
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`
+type GetTokenFunction = () => Promise<string>
+let tokenProvider: GetTokenFunction | null = null
+
+export const setTokenProvider = (getToken: GetTokenFunction) => {
+  tokenProvider = getToken
+}
+
+axiosInstance.interceptors.request.use(async (config) => {
+  if (tokenProvider) {
+    try {
+      const token = await tokenProvider()
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+      }
+    } catch (error) {
+      console.error('Failed to get token:', error)
+    }
   }
   return config
 })
 
-// axios response interceptors 추가로직 추가해야함 ex) 인증에 대한 에러
 axiosInstance.interceptors.response.use(
   (response: AxiosResponse) => response,
   (error: AxiosError) => {
