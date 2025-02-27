@@ -66,23 +66,30 @@ const SelectBar = ({
   text,
   id,
   onClick,
-  isSelected = false, // 기본값은 false
+  isSelected = false,
 }: SelectBarProps) => {
+  const handleClick = (e: React.MouseEvent) => {
+    onClick(id)
+    e.stopPropagation()
+    console.log('clicked')
+  }
   return (
-    <label
+    <div
       className='flex items-center justify-between py-2 border-b border-gray-200'
-      onClick={(e) => {
-        e.preventDefault() // 기본 동작 방지
-        onClick(id)
-      }}
+      onClick={handleClick}
     >
       <div className='flex items-center gap-2'>
         <Avatar imgUrl={imgUrl} text={text} />
         <div className='font-semibold'>{name}</div>
         <div className='text-gray-500'>{department}</div>
       </div>
-      <input type='checkbox' checked={isSelected} />
-    </label>
+      <input
+        type='checkbox'
+        checked={isSelected}
+        onClick={handleClick}
+        onChange={() => {}}
+      />
+    </div>
   )
 }
 
