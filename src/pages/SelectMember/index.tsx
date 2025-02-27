@@ -77,7 +77,7 @@ const SelectMember = () => {
     <div>
       <div className='flex flex-col gap-4'>
         <div className='flex flex-col w-full gap-2 h-30'>
-          <p>함께 먹을 사람</p>
+          <p className='font-semibold'>🙌 함께 먹을 사람</p>
           <div className='flex gap-6 overflow-x-auto scrollbar-hide'>
             {members.map((member) => (
               <div
