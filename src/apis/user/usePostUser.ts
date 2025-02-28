@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import { axiosInstance } from '../axiosInstance'
 
 interface PostUserProps {
-  userName: string
+  name: string
   teamName: string
   spicy: number
   salty: number

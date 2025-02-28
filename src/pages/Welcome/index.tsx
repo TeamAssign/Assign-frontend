@@ -21,7 +21,7 @@ const teamList = [
 ]
 // zod 스키마 정의
 const welcomeSchema = z.object({
-  userName: z.string().min(1, { message: '이름을 입력해주세요' }),
+  name: z.string().min(1, { message: '이름을 입력해주세요' }),
   teamName: z.string().min(1, { message: '팀을 선택해주세요' }),
 
   sweet: z.number().min(0).max(5),
@@ -47,7 +47,7 @@ const Welcome = () => {
     formState: { errors },
   } = useForm<WelcomeFormValues>({
     defaultValues: {
-      userName: '',
+      name: '',
       teamName: '',
       sweet: 0,
       spicy: 0,
@@ -107,14 +107,14 @@ const Welcome = () => {
               이름을 입력해주세요
             </p>
             <Controller
-              name='userName'
+              name='name'
               control={control}
               render={({ field }) => (
                 <div className='space-y-2'>
                   <Input {...field} placeholder='홍길동' className='w-full' />
-                  {errors.userName && (
+                  {errors.name && (
                     <p className='text-red-500 text-subbody'>
-                      {errors.userName.message}
+                      {errors.name.message}
                     </p>
                   )}
                 </div>
