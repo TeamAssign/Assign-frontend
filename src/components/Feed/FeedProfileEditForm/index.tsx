@@ -1,6 +1,7 @@
 import ImageIcon from '@/assets/icons/image-icon.svg?react'
 import { Button, FlavorStatItem, TextArea } from '@/components'
-import { FlavorValues } from '@/types'
+import { ProfileFormSchema, ProfileFormValues } from '@/schemas/profileSchema'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { ChangeEvent, useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
@@ -14,13 +15,6 @@ interface FeedProfileEditFormProps {
   profileImageUrl?: string
 }
 
-interface ReviewFormValues {
-  flavors: FlavorValues
-  pros: string
-  cons: string
-  profileImageUrl: File | string
-}
-
 const FeedProfileEditForm = ({
   type,
   sweet,
@@ -30,24 +24,30 @@ const FeedProfileEditForm = ({
   cons,
   profileImageUrl,
 }: FeedProfileEditFormProps) => {
-  const { control, handleSubmit, register, setValue } =
-    useForm<ReviewFormValues>({
-      defaultValues: {
-        flavors: {
-          sweet: sweet || 0,
-          spicy: spicy || 0,
-          salty: salty || 0,
-        },
-        pros: pros || '',
-        cons: cons || '',
-        profileImageUrl: profileImageUrl || '',
+  const {
+    control,
+    handleSubmit,
+    register,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      flavors: {
+        sweet: sweet || 0,
+        spicy: spicy || 0,
+        salty: salty || 0,
       },
-    })
+      pros: pros || '',
+      cons: cons || '',
+      profileImageUrl: profileImageUrl || '',
+    },
+    resolver: zodResolver(ProfileFormSchema),
+  })
 
   const [previewImg, setPreviewImg] = useState<string>(profileImageUrl || '')
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
-  const handleClickSubmit = (data: ReviewFormValues) => {
+  const handleClickSubmit = (data: ProfileFormValues) => {
     console.log(data)
   }
 
@@ -164,6 +164,11 @@ const FeedProfileEditForm = ({
             placeholder='좋아하는 음식 성향을 이야기해주세요!'
             className='focus:outline-none focus:border-black'
           />
+          {errors.pros && (
+            <p className='text-description font-semibold text-red-500'>
+              {errors.pros.message}
+            </p>
+          )}
         </div>
         <div>
           <span className='text-title text-sub-2 font-bold'>
@@ -174,6 +179,11 @@ const FeedProfileEditForm = ({
             placeholder='싫어하는 음식 성향을 이야기해주세요!'
             className='focus:outline-none focus:border-black'
           />
+          {errors.cons && (
+            <p className='text-description font-semibold text-red-500'>
+              {errors.cons.message}
+            </p>
+          )}
         </div>
 
         <Button type='submit'>후기 작성 완료</Button>
