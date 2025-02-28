@@ -1,3 +1,6 @@
+import { setAuth0Token } from '@/apis/auth0Instance'
+import useGetToken from '@/apis/user/useGetToken'
+import { patchIsFirstLogin } from '@/apis/user/usePatchIsFirstLogin'
 import usePostUser from '@/apis/user/usePostUser'
 import {
   Button,
@@ -7,6 +10,7 @@ import {
   TextArea,
 } from '@/components'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { jwtDecode } from 'jwt-decode'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -54,13 +58,38 @@ const Welcome = () => {
     resolver: zodResolver(welcomeSchema),
   })
 
-  const { mutate } = usePostUser()
+  const postUser = usePostUser()
+  const { data: tokenData } = useGetToken()
 
   const onSubmit = handleSubmit((data) => {
     console.log('Form data:', data)
     try {
-      console.log('API 호출 성공')
-      mutate(data)
+      postUser.mutate(data, {
+        onSuccess: async () => {
+          if (tokenData) {
+            try {
+              console.log('토큰 데이터:', tokenData)
+              const decodedToken = jwtDecode(tokenData)
+              if (!decodedToken.sub) {
+                throw new Error('토큰에 사용자 ID가 없습니다')
+              }
+              const userId = decodedToken.sub
+              setAuth0Token(tokenData)
+              await patchIsFirstLogin(userId)
+              alert('성공적으로 제출되었습니다.')
+            } catch (error) {
+              console.error('토큰 처리 중 오류:', error)
+              alert('사용자 정보 업데이트 중 오류가 발생했습니다.')
+            }
+          } else {
+            console.error('토큰이 없습니다')
+            alert('인증 정보를 가져올 수 없습니다.')
+          }
+        },
+        onError: () => {
+          alert('제출에 실패했습니다.')
+        },
+      })
     } catch (error) {
       console.error('API 호출 실패:', error)
     }
