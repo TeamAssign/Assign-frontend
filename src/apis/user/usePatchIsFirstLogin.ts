@@ -4,7 +4,7 @@ export const patchIsFirstLogin = async (userId: string): Promise<void> => {
   try {
     await auth0Instance.patch(`/users/${userId}`, {
       user_metadata: {
-        isFirstLogin: false,
+        first_login: false,
       },
     })
   } catch (error) {
