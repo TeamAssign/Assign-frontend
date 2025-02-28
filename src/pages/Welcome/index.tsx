@@ -1,4 +1,5 @@
 import { setAuth0Token } from '@/apis/auth0Instance'
+import useGetTeam from '@/apis/team/useGetTeam'
 import useGetToken from '@/apis/user/useGetToken'
 import { patchIsFirstLogin } from '@/apis/user/usePatchIsFirstLogin'
 import usePostUser from '@/apis/user/usePostUser'
@@ -6,39 +7,15 @@ import {
   Button,
   FlavorStatItem,
   Input,
+  Loader,
   SelectBox,
   TextArea,
 } from '@/components'
+import { WelcomeFormValues, WelcomeSchema } from '@/schemas/welcomeSchema'
+import { useAuth0 } from '@auth0/auth0-react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { jwtDecode } from 'jwt-decode'
 import { Controller, useForm } from 'react-hook-form'
-import { z } from 'zod'
-
-const teamList = [
-  { teamId: 1, teamName: '팀1' },
-  { teamId: 2, teamName: '팀2' },
-  { teamId: 3, teamName: '팀3' },
-]
-// zod 스키마 정의
-const welcomeSchema = z.object({
-  name: z.string().min(1, { message: '이름을 입력해주세요' }),
-  teamName: z.string().min(1, { message: '팀을 선택해주세요' }),
-
-  sweet: z.number().min(0).max(5),
-  salty: z.number().min(0).max(5),
-  spicy: z.number().min(0).max(5),
-
-  pros: z
-    .string()
-    .min(15, { message: '15자 이상 입력해주세요' })
-    .max(100, { message: '100자 이내로 입력해주세요' }),
-  cons: z
-    .string()
-    .min(15, { message: '15자 이상 입력해주세요' })
-    .max(100, { message: '100자 이내로 입력해주세요' }),
-})
-// zod 스키마 타입 추론 - 스키마로부터 타입 생성
-type WelcomeFormValues = z.infer<typeof welcomeSchema>
 
 const Welcome = () => {
   const {
@@ -55,11 +32,13 @@ const Welcome = () => {
       pros: '',
       cons: '',
     },
-    resolver: zodResolver(welcomeSchema),
+    resolver: zodResolver(WelcomeSchema),
   })
 
   const postUser = usePostUser()
   const { data: tokenData } = useGetToken()
+  const { data: teamData, status } = useGetTeam()
+  const { getAccessTokenSilently } = useAuth0()
 
   const onSubmit = handleSubmit((data) => {
     console.log('Form data:', data)
@@ -69,7 +48,9 @@ const Welcome = () => {
           if (tokenData) {
             try {
               console.log('토큰 데이터:', tokenData)
-              const decodedToken = jwtDecode(tokenData)
+              const originalToken = await getAccessTokenSilently()
+
+              const decodedToken = jwtDecode(originalToken)
               if (!decodedToken.sub) {
                 throw new Error('토큰에 사용자 ID가 없습니다')
               }
@@ -77,6 +58,7 @@ const Welcome = () => {
               setAuth0Token(tokenData)
               await patchIsFirstLogin(userId)
               alert('성공적으로 제출되었습니다.')
+              window.location.reload()
             } catch (error) {
               console.error('토큰 처리 중 오류:', error)
               alert('사용자 정보 업데이트 중 오류가 발생했습니다.')
@@ -94,6 +76,16 @@ const Welcome = () => {
       console.error('API 호출 실패:', error)
     }
   })
+
+  if (status === 'pending') {
+    return (
+      <div className='flex items-center justify-center h-screen'>
+        <Loader />
+      </div>
+    )
+  }
+
+  console.log('팀 데이터:', teamData)
 
   return (
     <div className='p-4 bg-orange-50'>
@@ -133,7 +125,7 @@ const Welcome = () => {
                 <div className='space-y-2'>
                   <SelectBox
                     placeholder='팀 선택'
-                    values={teamList}
+                    values={teamData}
                     label='팀'
                     onChange={field.onChange}
                     defaultValue={field.value}
