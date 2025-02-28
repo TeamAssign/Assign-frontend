@@ -3,19 +3,21 @@ import { publicInstance } from '../publicInstance'
 
 const getToken = async () => {
   try {
-    const token = await publicInstance.get('/public/auth0/management-token')
-    return token.data.access_token
+    const response = await publicInstance.get('/public/auth0/management-token')
+    return response.data.data.access_token
   } catch (error) {
     console.error('토큰 클레임 확인 중 오류 발생:', error)
+    throw error
   }
 }
 
 const useGetToken = () => {
-  const { data } = useQuery({
+  const { data, error, isError } = useQuery({
     queryKey: ['token'],
     queryFn: getToken,
   })
-  return { data }
+
+  return { data, error, isError }
 }
 
 export default useGetToken
