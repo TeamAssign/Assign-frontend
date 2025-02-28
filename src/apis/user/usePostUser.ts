@@ -1,15 +1,6 @@
+import { PostUserProps } from '@/types/DTO'
 import { useMutation } from '@tanstack/react-query'
 import { axiosInstance } from '../axiosInstance'
-
-interface PostUserProps {
-  name: string
-  teamName: string
-  spicy: number
-  salty: number
-  sweet: number
-  pros: string
-  cons: string
-}
 
 const postUser = async (userInfo: PostUserProps) => {
   try {
