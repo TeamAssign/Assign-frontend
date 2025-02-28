@@ -1,5 +1,4 @@
 import { useMutation } from '@tanstack/react-query'
-import { useNavigate } from 'react-router-dom'
 import { axiosInstance } from '../axiosInstance'
 
 interface PostUserProps {
@@ -21,14 +20,15 @@ const postUser = async (userInfo: PostUserProps) => {
 }
 
 const usePostUser = () => {
-  const navigate = useNavigate()
-  const { mutate, status, data } = useMutation({
-    mutationFn: postUser,
+  return useMutation({
+    mutationFn: (data: PostUserProps) => postUser(data),
     onSuccess: () => {
-      navigate('/')
+      console.log('register success')
+    },
+    onError: (error) => {
+      console.error('register error:', error)
     },
   })
-  return { mutate, status, data }
 }
 
 export default usePostUser
