@@ -50,7 +50,7 @@ const ProtectedRoute = () => {
   }
 
   if (location.pathname === '/welcome') {
-    if (!isFirstLogin) {
+    if (isFirstLogin) {
       return <Outlet />
     } else {
       return <Navigate to='/' replace />
@@ -58,7 +58,7 @@ const ProtectedRoute = () => {
   }
 
   if (location.pathname !== '/welcome') {
-    if (!isFirstLogin) {
+    if (isFirstLogin) {
       return <Navigate to='/welcome' replace />
     } else {
       return <Outlet />
