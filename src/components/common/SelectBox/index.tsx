@@ -10,7 +10,7 @@ import {
 
 interface SelectBoxProps {
   placeholder: string
-  values: { teamId: number; teamName: string }[]
+  values: { id: number; name: string }[]
   label: string
   defaultValue?: string
   onChange: (value: string) => void
@@ -67,10 +67,10 @@ const SelectBox = ({
           {values.map((value) => (
             <SelectItem
               className='text-main-black hover:bg-light-gray'
-              key={value.teamId}
-              value={String(value.teamId)}
+              key={value.id}
+              value={String(value.name)}
             >
-              {value.teamName}
+              {value.name}
             </SelectItem>
           ))}
         </SelectGroup>
