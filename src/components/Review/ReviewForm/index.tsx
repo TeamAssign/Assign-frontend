@@ -21,7 +21,9 @@ import { FOOD_CATEGORIES } from '@/constant'
 import useSearchMember from '@/hooks/useSearchMember'
 import { cn } from '@/lib/utils'
 import { usersData } from '@/mocks/usersData'
+import { ReviewFormSchema, ReviewFormValues } from '@/schemas/reviewSchema'
 import { Participant } from '@/types'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
@@ -36,17 +38,6 @@ interface ReviewFormProps {
   participants?: Participant[]
 }
 
-interface ReviewFormValues {
-  recommendationId?: number
-  type: string
-  menu: string
-  reviewImg: File | null
-  comment: string
-  category: string
-  star: number
-  participants: Participant[]
-}
-
 const ReviewForm = ({
   isEditMember,
   recommendationId,
@@ -57,19 +48,26 @@ const ReviewForm = ({
   comment,
   imgUrl,
 }: ReviewFormProps) => {
-  const { register, handleSubmit, setValue, watch, control } =
-    useForm<ReviewFormValues>({
-      defaultValues: {
-        ...(recommendationId && { recommendationId }),
-        type: type || '',
-        menu: menu || '',
-        reviewImg: null,
-        comment: comment || '',
-        category: category || '',
-        star: 0,
-        participants: participants || [],
-      },
-    })
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    control,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      ...(recommendationId && { recommendationId }),
+      type: type || '',
+      menu: menu || '',
+      reviewImg: null,
+      comment: comment || '',
+      category: category || '',
+      star: 0,
+      participants: participants || [],
+    },
+    resolver: zodResolver(ReviewFormSchema),
+  })
 
   const {
     ref,
@@ -135,6 +133,11 @@ const ReviewForm = ({
               />
             )}
           />
+          {type === '' && errors.type && (
+            <p className='text-description font-semibold text-red-500'>
+              {errors.type.message}
+            </p>
+          )}
         </div>
 
         <div className='flex flex-col gap-2'>
@@ -206,6 +209,11 @@ const ReviewForm = ({
               </div>
             ))}
           </div>
+          {members.length === 0 && errors.participants && (
+            <p className='text-description font-semibold text-red-500'>
+              {errors.participants.message}
+            </p>
+          )}
         </div>
         <div className='flex flex-col gap-2'>
           <h1 className='text-sub-2 font-semibold'>메뉴 명</h1>
@@ -217,6 +225,11 @@ const ReviewForm = ({
             className='focus:outline-none focus:border-black'
           />
         </div>
+        {errors.menu && (
+          <p className='text-description font-semibold text-red-500'>
+            {errors.menu.message}
+          </p>
+        )}
 
         <div className='flex flex-col gap-2'>
           <h1 className='text-sub-2 font-semibold'>카테고리</h1>
@@ -249,6 +262,11 @@ const ReviewForm = ({
               </Select>
             )}
           />
+          {errors.category && (
+            <p className='text-description font-semibold text-red-500'>
+              {errors.category.message}
+            </p>
+          )}
         </div>
 
         <div className='flex flex-col gap-2'>
@@ -258,6 +276,11 @@ const ReviewForm = ({
             placeholder='후기를 등록 입력해주세요.'
             className='focus:outline-none focus:border-black'
           />
+          {errors.comment && (
+            <p className='text-description font-semibold text-red-500'>
+              {errors.comment.message}
+            </p>
+          )}
         </div>
         <div className='flex flex-col gap-2'>
           <h1 className='text-sub-2 font-semibold'>별점</h1>
@@ -276,6 +299,11 @@ const ReviewForm = ({
             ))}
           </div>
           <input {...register('star')} type='hidden' value={rating} />
+          {rating === 0 && errors.star && (
+            <p className='text-description font-semibold text-red-500'>
+              {errors.star.message}
+            </p>
+          )}
         </div>
         <Button type='submit'>후기 작성 완료</Button>
       </form>
