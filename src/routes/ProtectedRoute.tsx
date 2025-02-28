@@ -14,9 +14,7 @@ const ProtectedRoute = () => {
       if (isAuthenticated) {
         try {
           const claims = await getIdTokenClaims()
-          console.log('Claims:', claims)
           const isFirstLoginClaim = claims?.['https://back-end/isFirstLogin']
-          console.log('isFirstLogin value:', isFirstLoginClaim)
           setIsFirstLogin(isFirstLoginClaim)
         } catch (error) {
           console.error('토큰 클레임 확인 중 오류 발생:', error)
