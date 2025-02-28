@@ -3,25 +3,7 @@ import { useAuth0 } from '@auth0/auth0-react'
 import { useEffect, useState } from 'react'
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 
-export const PublicRoute = () => {
-  const { isAuthenticated, isLoading } = useAuth0()
-
-  if (isLoading) {
-    return (
-      <div className='flex items-center justify-center w-screen h-screen'>
-        <Loader />
-      </div>
-    )
-  }
-
-  if (isAuthenticated) {
-    return <Navigate to='/' replace />
-  }
-
-  return <Outlet />
-}
-
-export const ProtectedRoute = () => {
+const ProtectedRoute = () => {
   const { isAuthenticated, isLoading, getIdTokenClaims } = useAuth0()
   const [isFirstLogin, setIsFirstLogin] = useState<boolean | null>(null)
   const [checkingClaims, setCheckingClaims] = useState(true)
@@ -85,3 +67,5 @@ export const ProtectedRoute = () => {
 
   return <Outlet />
 }
+
+export default ProtectedRoute

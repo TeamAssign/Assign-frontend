@@ -8,7 +8,8 @@ import SignIn from '@/pages/SignIn'
 import Team from '@/pages/Team'
 import Welcome from '@/pages/Welcome'
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
-import { ProtectedRoute, PublicRoute } from './RedirectRoute'
+import ProtectedRoute from './ProtectedRoute'
+import PublicRoute from './PublicRoute'
 
 export const Routes = () => {
   return <RouterProvider router={router} />
