@@ -42,5 +42,11 @@ export const PATH_VALUE = [
   { path: '/recommendation', value: '메뉴 추천' },
   { path: '/history', value: '추천 히스토리' },
   { path: '/my', value: '내 피드' },
-  { path: '/selectmember', value: '함께 먹을 사람 선택' },
+  { path: '/selectoptions', value: '추천 옵션 선택' },
+]
+
+export const EAT_TYPES_ARR = [
+  { key: 'alone', value: '혼밥' },
+  { key: 'together', value: '그룹' },
+  { key: 'team', value: '회식' },
 ]

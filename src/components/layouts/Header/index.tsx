@@ -10,8 +10,8 @@ const Header = () => {
   const headerContent = PATH_VALUE.find((item) => {
     if (item.path === '/') return item.path === currentPathname
     if (item.path === '/teams') return currentPathname.startsWith('/teams')
-    if (item.path === '/selectmember')
-      return currentPathname.startsWith('/selectmember')
+    if (item.path === '/selectoptions')
+      return currentPathname.startsWith('/selectoptions')
     return item.path === currentPathname
   })
 
