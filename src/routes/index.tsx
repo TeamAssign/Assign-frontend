@@ -3,7 +3,7 @@ import History from '@/pages/History'
 import Home from '@/pages/Home'
 import My from '@/pages/My'
 import Recommendation from '@/pages/Recommendation'
-import SelectMember from '@/pages/SelectMember'
+import SelectOptions from '@/pages/SelectOptions'
 import SignIn from '@/pages/SignIn'
 import Team from '@/pages/Team'
 import Welcome from '@/pages/Welcome'
@@ -37,7 +37,7 @@ const router = createBrowserRouter([
           { path: '/my', element: <My /> },
           { path: '/teams/:teamId', element: <Team /> },
           { path: '/recommendation', element: <Recommendation /> },
-          { path: '/selectmember/:type', element: <SelectMember /> },
+          { path: '/selectoptions/:type', element: <SelectOptions /> },
         ],
       },
     ],
