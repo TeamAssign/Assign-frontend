@@ -18,13 +18,13 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { FOOD_CATEGORIES } from '@/constant'
+import useGetUsersList from '@/hooks/apis/user/useGetUsersList'
 import useSearchMember from '@/hooks/useSearchMember'
 import { cn } from '@/lib/utils'
-import { usersData } from '@/mocks/usersData'
 import { ReviewFormSchema, ReviewFormValues } from '@/schemas/reviewSchema'
-import { Participant } from '@/types'
+import { UserInfoType } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
 interface ReviewFormProps {
@@ -35,7 +35,7 @@ interface ReviewFormProps {
   imgUrl?: string
   comment?: string
   category?: string
-  participants?: Participant[]
+  participants?: UserInfoType[]
 }
 
 const ReviewForm = ({
@@ -69,6 +69,13 @@ const ReviewForm = ({
     resolver: zodResolver(ReviewFormSchema),
   })
 
+  const { data, status } = useGetUsersList()
+  console.log(status)
+  const allUsers = useMemo(() => {
+    if (!data) return []
+    return data.pages.flatMap((page) => page.content)
+  }, [data])
+
   const {
     ref,
     members,
@@ -78,7 +85,7 @@ const ReviewForm = ({
     handleMemberInputChange,
     handleSelectMember,
     handleDeleteMember,
-  } = useSearchMember(usersData, participants)
+  } = useSearchMember(allUsers, participants)
 
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const [previewImg, setPreviewImg] = useState<string>(imgUrl || '')
@@ -121,7 +128,7 @@ const ReviewForm = ({
         onSubmit={handleSubmit(handleClickSubmit)}
       >
         <div className='flex flex-col gap-2'>
-          <h1 className='text-sub-2 font-semibold'>식사 유형</h1>
+          <h1 className='font-semibold text-sub-2'>식사 유형</h1>
           <Controller
             name='type'
             control={control}
@@ -134,17 +141,17 @@ const ReviewForm = ({
             )}
           />
           {type === '' && errors.type && (
-            <p className='text-description font-semibold text-red-500'>
+            <p className='font-semibold text-red-500 text-description'>
               {errors.type.message}
             </p>
           )}
         </div>
 
         <div className='flex flex-col gap-2'>
-          <h1 className='text-sub-2 font-semibold'>후기 사진</h1>
-          <div className='w-full flex items-center gap-4'>
+          <h1 className='font-semibold text-sub-2'>후기 사진</h1>
+          <div className='flex items-center w-full gap-4'>
             {previewImg && (
-              <div className=' w-24 h-24'>
+              <div className='w-24 h-24 '>
                 <img
                   className='object-cover w-full h-full rounded-md border-[1px] border-light-gray'
                   src={previewImg}
@@ -173,7 +180,7 @@ const ReviewForm = ({
           </div>
         </div>
         <div className='flex flex-col gap-2'>
-          <h1 className='text-sub-2 font-semibold'>먹은 사람 등록</h1>
+          <h1 className='font-semibold text-sub-2'>먹은 사람 등록</h1>
           {isEditMember && (
             <div className='relative'>
               <Input
@@ -191,32 +198,32 @@ const ReviewForm = ({
             </div>
           )}
 
-          <div className='flex gap-4 items-center overflow-x-auto whitespace-nowrap '>
+          <div className='flex items-center gap-4 overflow-x-auto whitespace-nowrap '>
             {members.map((member) => (
               <div className='relative py-2' key={member.id}>
                 <Avatar
-                  imgUrl={member.profileImage}
+                  imgUrl={member.profileImageUrl}
                   text={member.name}
                   name={member.name}
-                  department={member.team}
+                  department={member.teamName}
                 />
                 {isEditMember && (
                   <CancelCircleIcon
                     onClick={() => handleDeleteMember(member.id)}
-                    className='absolute top-0 -right-2 cursor-pointer'
+                    className='absolute top-0 cursor-pointer -right-2'
                   />
                 )}
               </div>
             ))}
           </div>
           {members.length === 0 && errors.participants && (
-            <p className='text-description font-semibold text-red-500'>
+            <p className='font-semibold text-red-500 text-description'>
               {errors.participants.message}
             </p>
           )}
         </div>
         <div className='flex flex-col gap-2'>
-          <h1 className='text-sub-2 font-semibold'>메뉴 명</h1>
+          <h1 className='font-semibold text-sub-2'>메뉴 명</h1>
           <Input
             {...register('menu')}
             defaultValue={menu}
@@ -226,13 +233,13 @@ const ReviewForm = ({
           />
         </div>
         {errors.menu && (
-          <p className='text-description font-semibold text-red-500'>
+          <p className='font-semibold text-red-500 text-description'>
             {errors.menu.message}
           </p>
         )}
 
         <div className='flex flex-col gap-2'>
-          <h1 className='text-sub-2 font-semibold'>카테고리</h1>
+          <h1 className='font-semibold text-sub-2'>카테고리</h1>
           <Controller
             name='category'
             control={control}
@@ -263,27 +270,27 @@ const ReviewForm = ({
             )}
           />
           {errors.category && (
-            <p className='text-description font-semibold text-red-500'>
+            <p className='font-semibold text-red-500 text-description'>
               {errors.category.message}
             </p>
           )}
         </div>
 
         <div className='flex flex-col gap-2'>
-          <h1 className='text-sub-2 font-semibold'>후기</h1>
+          <h1 className='font-semibold text-sub-2'>후기</h1>
           <TextArea
             {...register('comment')}
             placeholder='후기를 등록 입력해주세요.'
             className='focus:outline-none focus:border-black'
           />
           {errors.comment && (
-            <p className='text-description font-semibold text-red-500'>
+            <p className='font-semibold text-red-500 text-description'>
               {errors.comment.message}
             </p>
           )}
         </div>
         <div className='flex flex-col gap-2'>
-          <h1 className='text-sub-2 font-semibold'>별점</h1>
+          <h1 className='font-semibold text-sub-2'>별점</h1>
           <div className='flex'>
             {[...Array(5)].map((_, index) => (
               <div
@@ -300,7 +307,7 @@ const ReviewForm = ({
           </div>
           <input {...register('star')} type='hidden' value={rating} />
           {rating === 0 && errors.star && (
-            <p className='text-description font-semibold text-red-500'>
+            <p className='font-semibold text-red-500 text-description'>
               {errors.star.message}
             </p>
           )}

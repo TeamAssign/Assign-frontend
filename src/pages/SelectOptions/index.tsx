@@ -1,5 +1,12 @@
 import CancelCircleIcon from '@/assets/icons/cancel-circle.svg?react'
-import { Avatar, Button, Input, SearchDropDown, SelectBar } from '@/components'
+import {
+  Avatar,
+  Button,
+  Input,
+  SearchDropDown,
+  SelectBar,
+  UserSkeleton,
+} from '@/components'
 import {
   Select,
   SelectContent,
@@ -10,16 +17,34 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { EAT_TYPES_ARR, FOOD_CATEGORIES } from '@/constant'
+import useGetUsersList from '@/hooks/apis/user/useGetUsersList'
 import useSearchMember from '@/hooks/useSearchMember'
-import { myInfo } from '@/mocks/MyInfo'
-import { usersData } from '@/mocks/usersData'
-import { useState } from 'react'
+import { useUserStore } from '@/store/UserInfoStore'
+import { UserInfoType } from '@/types'
+import React, { useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
-
-// 아래 selectbox에 해당하는 유저데이터 get
 
 const SelectOptions = () => {
   const { type } = useParams<string>()
+  const [category, setCategory] = useState('')
+  const eatType = EAT_TYPES_ARR.find((item) => item.key === type)?.value
+  const myInfo = useUserStore((state) => state)
+
+  const {
+    data,
+    status,
+    ref: userRef,
+    isFetchingNextPage,
+    hasNextPage,
+  } = useGetUsersList()
+  console.log(status)
+  // 모든 페이지의 사용자 데이터를 하나의 배열로 병합
+  const allUsers = useMemo(() => {
+    if (!data) return []
+    // 모든 페이지의 content를 하나의 배열로 평탄화
+    return data.pages.flatMap((page) => page.content)
+  }, [data])
+
   const {
     ref,
     members,
@@ -30,13 +55,14 @@ const SelectOptions = () => {
     handleSelectMember,
     handleDeleteMember,
     toggleMember,
-  } = useSearchMember(usersData)
-
-  const [category, setCategory] = useState('')
-  const eatType = EAT_TYPES_ARR.find((item) => item.key === type)?.value
+  } = useSearchMember(allUsers)
 
   const handleClick = () => {
-    console.log(members, category, eatType)
+    if (eatType === '혼밥') {
+      console.log(myInfo, category, eatType)
+    } else {
+      console.log(members, category, eatType)
+    }
   }
 
   const handleChangeCategory = (value: string) => {
@@ -44,8 +70,8 @@ const SelectOptions = () => {
   }
 
   return (
-    <div className='w-full flex flex-col gap-4'>
-      <div className='w-full flex flex-col gap-2'>
+    <div className='flex flex-col w-full gap-4'>
+      <div className='flex flex-col w-full gap-2'>
         <span className='font-bold text-sub-2 text-title'>
           🍽️ 추천 받고자하는 음식 카테고리
         </span>
@@ -74,10 +100,10 @@ const SelectOptions = () => {
         {eatType === '혼밥' && (
           <div className='w-full'>
             <Avatar
-              imgUrl={myInfo.profileImage}
+              imgUrl={myInfo.profileImageUrl}
               text={myInfo.name}
               name={myInfo.name}
-              department={myInfo.team}
+              department={myInfo.teamName}
             />
           </div>
         )}
@@ -91,10 +117,10 @@ const SelectOptions = () => {
                   onClick={() => handleDeleteMember(member.id)}
                 >
                   <Avatar
-                    imgUrl={member.profileImage}
+                    imgUrl={member.profileImageUrl}
                     text={member.name}
                     name={member.name}
-                    department={member.team}
+                    department={member.teamName}
                   />
                   <CancelCircleIcon className='absolute top-0 cursor-pointer -right-2' />
                 </div>
@@ -117,21 +143,33 @@ const SelectOptions = () => {
               />
             </div>
             <div className='flex flex-col gap-2 py-2'>
-              {usersData.map((user) => (
-                <div key={user.id}>
-                  <SelectBar
-                    id={user.id}
-                    imgUrl={user.profileImage}
-                    name={user.name}
-                    department={user.team}
-                    text={user.name}
-                    onSelect={toggleMember}
-                    isSelected={members.some((member) => member.id === user.id)}
-                  />
-                </div>
+              {data?.pages.map((page, pageIndex) => (
+                <React.Fragment key={pageIndex}>
+                  {page.content.map((user: UserInfoType) => (
+                    <SelectBar
+                      key={user.id}
+                      id={user.id}
+                      imgUrl={user.profileImageUrl}
+                      name={user.name}
+                      department={user.teamName}
+                      text={user.name}
+                      onSelect={toggleMember}
+                      isSelected={members.some(
+                        (member) => member.id === user.id,
+                      )}
+                    />
+                  ))}
+                </React.Fragment>
               ))}
             </div>
           </>
+        )}
+        {hasNextPage && (
+          <div ref={userRef}>
+            <section className='flex items-center justify-center w-full'>
+              {isFetchingNextPage ? <UserSkeleton /> : null}
+            </section>
+          </div>
         )}
       </div>
 
