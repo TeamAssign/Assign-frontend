@@ -3,8 +3,8 @@ import { z } from 'zod'
 const ParticipantSchema = z.object({
   id: z.number(),
   name: z.string(),
-  team: z.string(),
-  profileImage: z.string(),
+  teamName: z.string(),
+  profileImageUrl: z.string(),
 })
 
 const ReviewFormSchema = z.object({
