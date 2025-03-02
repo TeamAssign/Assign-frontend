@@ -13,7 +13,6 @@ const usePostRegisterUser = (tokenData: string) => {
     mutationFn: (data: PostUserProps) => postRegisterUser(data),
     onSuccess: async () => {
       if (tokenData) {
-        console.log('토큰 데이터:', tokenData)
         try {
           const originalToken = await getAccessTokenSilently()
           const decodedToken = jwtDecode(originalToken)
@@ -25,20 +24,16 @@ const usePostRegisterUser = (tokenData: string) => {
           const userId = decodedToken.sub
           setAuth0Token(tokenData)
           await patchIsFirstLogin(userId)
-          alert('성공적으로 제출되었습니다.')
           window.location.reload()
         } catch (error) {
-          console.error('토큰 처리 중 오류:', error)
-          alert('사용자 정보 업데이트 중 오류가 발생했습니다.')
+          console.error('사용자 정보 업데이트 중 오류가 발생했습니다.', error)
         }
       } else {
         console.error('토큰이 없습니다')
-        alert('인증 정보를 가져올 수 없습니다.')
       }
     },
     onError: (error) => {
       console.error('register error:', error)
-      alert('제출에 실패했습니다.')
     },
   })
 }
