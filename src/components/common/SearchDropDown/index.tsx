@@ -1,11 +1,11 @@
-import { UserInfoType } from '@/types'
+import { Participant } from '@/types'
 import { Ref } from 'react'
 
 interface SearchDropDownProps {
   ref: Ref<HTMLUListElement>
   isOpen: boolean
   onClick: (id: number) => void
-  memberList: UserInfoType[]
+  memberList: Participant[]
 }
 
 const SearchDropDown = ({

@@ -1,12 +1,12 @@
-import { UserInfoType } from '@/types'
+import { Participant } from '@/types'
 import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react'
 import { useDebounce } from 'use-debounce'
 
 const useSearchMember = (
-  usersData: UserInfoType[],
-  participants: UserInfoType[] = [],
+  usersData: Participant[],
+  participants: Participant[] = [],
 ) => {
-  const [members, setMembers] = useState<UserInfoType[]>(participants)
+  const [members, setMembers] = useState<Participant[]>(participants)
   const [searchInput, setSearchInput] = useState('')
   const [debouncedSearchInput] = useDebounce(searchInput, 300) // 디바운스 적용
   const [isOpenMemberDropDown, setIsOpenMemberDropDown] = useState(false)

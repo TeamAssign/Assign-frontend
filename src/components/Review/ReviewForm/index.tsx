@@ -22,7 +22,7 @@ import useGetUsersList from '@/hooks/apis/user/useGetUsersList'
 import useSearchMember from '@/hooks/useSearchMember'
 import { cn } from '@/lib/utils'
 import { ReviewFormSchema, ReviewFormValues } from '@/schemas/reviewSchema'
-import { UserInfoType } from '@/types'
+import { Participant } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -35,7 +35,7 @@ interface ReviewFormProps {
   imgUrl?: string
   comment?: string
   category?: string
-  participants?: UserInfoType[]
+  participants?: Participant[]
 }
 
 const ReviewForm = ({
