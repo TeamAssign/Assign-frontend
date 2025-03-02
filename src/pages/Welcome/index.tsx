@@ -1,8 +1,3 @@
-import { setAuth0Token } from '@/apis/auth0Instance'
-import useGetTeam from '@/apis/team/useGetTeam'
-import useGetToken from '@/apis/user/useGetToken'
-import { patchIsFirstLogin } from '@/apis/user/usePatchIsFirstLogin'
-import usePostUser from '@/apis/user/usePostUser'
 import {
   Button,
   FlavorStatItem,
@@ -11,10 +6,11 @@ import {
   SelectBox,
   TextArea,
 } from '@/components'
+import useGetToken from '@/hooks/apis/auth/useGetToken'
+import useGetTeam from '@/hooks/apis/team/useGetTeam'
+import usePostRegisterUser from '@/hooks/apis/user/usePostRegisterUser'
 import { WelcomeFormValues, WelcomeSchema } from '@/schemas/welcomeSchema'
-import { useAuth0 } from '@auth0/auth0-react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { jwtDecode } from 'jwt-decode'
 import { Controller, useForm } from 'react-hook-form'
 
 const Welcome = () => {
@@ -35,49 +31,17 @@ const Welcome = () => {
     resolver: zodResolver(WelcomeSchema),
   })
 
-  const postUser = usePostUser()
   const { data: tokenData } = useGetToken()
-  const { data: teamData, status } = useGetTeam()
-  const { getAccessTokenSilently } = useAuth0()
+  const { data: teamData, status: getTeamStatus } = useGetTeam()
+  const { mutate: registerUser } = usePostRegisterUser(tokenData)
 
   const onSubmit = handleSubmit((data) => {
     console.log('Form data:', data)
-    try {
-      postUser.mutate(data, {
-        onSuccess: async () => {
-          if (tokenData) {
-            try {
-              console.log('토큰 데이터:', tokenData)
-              const originalToken = await getAccessTokenSilently()
 
-              const decodedToken = jwtDecode(originalToken)
-              if (!decodedToken.sub) {
-                throw new Error('토큰에 사용자 ID가 없습니다')
-              }
-              const userId = decodedToken.sub
-              setAuth0Token(tokenData)
-              await patchIsFirstLogin(userId)
-              alert('성공적으로 제출되었습니다.')
-              window.location.reload()
-            } catch (error) {
-              console.error('토큰 처리 중 오류:', error)
-              alert('사용자 정보 업데이트 중 오류가 발생했습니다.')
-            }
-          } else {
-            console.error('토큰이 없습니다')
-            alert('인증 정보를 가져올 수 없습니다.')
-          }
-        },
-        onError: () => {
-          alert('제출에 실패했습니다.')
-        },
-      })
-    } catch (error) {
-      console.error('API 호출 실패:', error)
-    }
+    registerUser(data)
   })
 
-  if (status === 'pending') {
+  if (getTeamStatus === 'pending') {
     return (
       <div className='flex items-center justify-center h-screen'>
         <Loader />
@@ -103,7 +67,11 @@ const Welcome = () => {
               control={control}
               render={({ field }) => (
                 <div className='space-y-2'>
-                  <Input {...field} placeholder='홍길동' className='w-full' />
+                  <Input
+                    {...field}
+                    placeholder='이름을 입력해주세요'
+                    className='w-full focus:outline-none focus:border-black'
+                  />
                   {errors.name && (
                     <p className='text-red-500 text-subbody'>
                       {errors.name.message}
@@ -201,14 +169,17 @@ const Welcome = () => {
                     const currentLength = field.value.length
                     return (
                       <div className='space-y-2'>
-                        <TextArea {...field} className='w-full' />
+                        <TextArea
+                          {...field}
+                          className='w-full focus:outline-none focus:border-black'
+                        />
                         <div className='flex justify-between'>
                           {errors.pros && (
                             <p className='text-red-500 text-subbody'>
                               {errors.pros.message}
                             </p>
                           )}
-                          <span className={`text-subbody`}>
+                          <span className='text-subbody text-dark-gray'>
                             {currentLength}/100자
                           </span>
                         </div>
@@ -228,14 +199,17 @@ const Welcome = () => {
                     const currentLength = field.value.length
                     return (
                       <div className='space-y-2'>
-                        <TextArea {...field} className='w-full' />
+                        <TextArea
+                          {...field}
+                          className='w-full focus:outline-none focus:border-black'
+                        />
                         <div className='flex justify-between'>
                           {errors.cons && (
                             <p className='text-red-500 text-subbody'>
                               {errors.cons.message}
                             </p>
                           )}
-                          <span className={`text-subbody`}>
+                          <span className='text-subbody text-dark-gray'>
                             {currentLength}/100자
                           </span>
                         </div>
