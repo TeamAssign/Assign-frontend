@@ -22,3 +22,16 @@ export type MenuStoreValues = {
   placeUrl: string
   imageUrl: string
 }
+
+export type UserInfoType = {
+  id: number
+  name: string
+  profileImageUrl: string
+  teamId: number
+  teamName: string
+}
+
+export type TeamType = {
+  id: number
+  name: string
+}

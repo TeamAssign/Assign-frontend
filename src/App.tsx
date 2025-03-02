@@ -1,23 +1,32 @@
 import { setTokenProvider } from '@/apis/interceptors'
-import queryClient from '@/apis/queryClient'
+import useGetTeam from '@/hooks/apis/team/useGetTeam'
+import useGetUserInfo from '@/hooks/apis/user/useGetUserInfo'
 import { Routes } from '@/routes'
+import { useTeamStore } from '@/store/TeamStore'
+import { useUserStore } from '@/store/UserInfoStore'
 import '@/styles/global.css'
 import { useAuth0 } from '@auth0/auth0-react'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { useEffect } from 'react'
 
 const App = () => {
   const { getAccessTokenSilently } = useAuth0()
+  const { data: teamData, status: teamStatus } = useGetTeam()
+  const { data: myInfoData, status: myInfoStatus } = useGetUserInfo()
+  const setUserInfo = useUserStore((state) => state.setUserInfo)
+  const setTeams = useTeamStore((state) => state.setTeams)
 
   useEffect(() => {
     setTokenProvider(() => getAccessTokenSilently())
   }, [getAccessTokenSilently])
 
-  return (
-    <QueryClientProvider client={queryClient}>
-      <Routes />
-    </QueryClientProvider>
-  )
+  if (teamData && teamStatus === 'success') {
+    setTeams(teamData)
+  }
+  if (myInfoData && myInfoStatus === 'success') {
+    setUserInfo(myInfoData)
+  }
+
+  return <Routes />
 }
 
 export default App

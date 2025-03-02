@@ -3,11 +3,13 @@ import HomeIcon from '@/assets/icons/HomeIcon.svg?react'
 import TeamIcon from '@/assets/icons/TeamIcon.svg?react'
 import UserIcon from '@/assets/icons/UserIcon.svg?react'
 import { cn } from '@/lib/utils'
+import { useUserStore } from '@/store/UserInfoStore'
 import { Link, useLocation } from 'react-router-dom'
 
 const NavBar = () => {
   const location = useLocation()
   const currentPath = location.pathname
+  const teamId = useUserStore((state) => state.teamId)
 
   const isActive = (path: string) => currentPath === path
   const isTeamActive = () => currentPath.startsWith('/teams')
@@ -33,7 +35,7 @@ const NavBar = () => {
               'flex flex-col items-center gap-1 p-1',
               isTeamActive() && 'text-main',
             )}
-            to='/teams/3141341'
+            to={`/teams/${teamId}`}
           >
             <TeamIcon className='fill-current' />
             <span>팀 피드</span>
