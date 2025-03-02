@@ -1,11 +1,11 @@
-import { Participant } from '@/types'
+import { UserInfoType } from '@/types'
 import { Ref } from 'react'
 
 interface SearchDropDownProps {
   ref: Ref<HTMLUListElement>
   isOpen: boolean
   onClick: (id: number) => void
-  memberList: Participant[]
+  memberList: UserInfoType[]
 }
 
 const SearchDropDown = ({
@@ -27,13 +27,16 @@ const SearchDropDown = ({
       {memberList.map((member) => (
         <li
           key={member.id}
-          className='w-full px-2 py-1 hover:bg-gray-100 cursor-pointer'
+          className='w-full px-2 py-1 cursor-pointer hover:bg-gray-100'
           onClick={() => handleClick(member.id)}
         >
           <div className='flex items-center gap-6'>
-            <img src={member.profileImage} className='w-6 h-6 rounded-full' />
+            <img
+              src={member.profileImageUrl}
+              className='w-6 h-6 rounded-full'
+            />
             <h2>{member.name}</h2>
-            <h2 className='text-subbody text-gray-500'>{member.team}</h2>
+            <h2 className='text-gray-500 text-subbody'>{member.teamName}</h2>
           </div>
         </li>
       ))}
