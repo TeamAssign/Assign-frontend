@@ -1,13 +1,14 @@
-import { Participant } from '@/types'
-import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { UserInfoType } from '@/types'
+import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react'
+import { useDebounce } from 'use-debounce'
 
 const useSearchMember = (
-  usersData: Participant[],
-  participants: Participant[] = [],
+  usersData: UserInfoType[],
+  participants: UserInfoType[] = [],
 ) => {
-  const [members, setMembers] = useState<Participant[]>(participants)
+  const [members, setMembers] = useState<UserInfoType[]>(participants)
   const [searchInput, setSearchInput] = useState('')
-  const [searchMemberList, setSearchMemberList] = useState<Participant[]>([])
+  const [debouncedSearchInput] = useDebounce(searchInput, 300) // 디바운스 적용
   const [isOpenMemberDropDown, setIsOpenMemberDropDown] = useState(false)
   const ref = useRef<HTMLUListElement | null>(null)
 
@@ -24,19 +25,18 @@ const useSearchMember = (
     }
   }, [])
 
-  const handleMemberInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const userName = e.target.value.trim()
-    setSearchInput(userName)
+  const searchMemberList = useMemo(() => {
     const filteredUserList = usersData.filter((user) =>
-      user.name.trim().includes(userName),
+      user.name.trim().includes(debouncedSearchInput),
     )
+    setIsOpenMemberDropDown(
+      filteredUserList.length > 0 && debouncedSearchInput !== '',
+    )
+    return filteredUserList
+  }, [debouncedSearchInput, usersData])
 
-    if (filteredUserList.length !== 0 && userName !== '') {
-      setIsOpenMemberDropDown(true)
-      setSearchMemberList(filteredUserList)
-    } else {
-      setIsOpenMemberDropDown(false)
-    }
+  const handleMemberInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value.trim())
   }
 
   const handleSelectMember = (id: number) => {
