@@ -22,13 +22,14 @@ import useSearchMember from '@/hooks/useSearchMember'
 import { useUserStore } from '@/store/UserInfoStore'
 import { UserInfoType } from '@/types'
 import React, { useMemo, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 const SelectOptions = () => {
   const { type } = useParams<string>()
+  const navigate = useNavigate()
   const [category, setCategory] = useState('')
   const eatType = EAT_TYPES_ARR.find((item) => item.key === type)?.value
-  const myInfo = useUserStore((state) => state)
+  const { id, name, profileImageUrl, teamName } = useUserStore()
 
   const {
     data,
@@ -59,9 +60,28 @@ const SelectOptions = () => {
 
   const handleClick = () => {
     if (eatType === '혼밥') {
-      console.log(myInfo, category, eatType)
+      navigate('/recommendation', {
+        state: {
+          members: [
+            {
+              id,
+              name,
+              profileImageUrl,
+              teamName,
+            },
+          ],
+          category,
+          eatType,
+        },
+      })
     } else {
-      console.log(members, category, eatType)
+      navigate('/recommendation', {
+        state: {
+          members,
+          category,
+          eatType,
+        },
+      })
     }
   }
 
@@ -100,10 +120,10 @@ const SelectOptions = () => {
         {eatType === '혼밥' && (
           <div className='w-full'>
             <Avatar
-              imgUrl={myInfo.profileImageUrl}
-              text={myInfo.name}
-              name={myInfo.name}
-              department={myInfo.teamName}
+              imgUrl={profileImageUrl}
+              text={name}
+              name={name}
+              department={teamName}
             />
           </div>
         )}
