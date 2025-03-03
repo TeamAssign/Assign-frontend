@@ -3,8 +3,8 @@ import { MenuStoreValues } from '@/types'
 const StoreCard = ({
   placeUrl,
   imageUrl,
-  placeName,
-  roadAddressName,
+  name,
+  address,
   distance,
 }: MenuStoreValues) => {
   return (
@@ -17,14 +17,14 @@ const StoreCard = ({
       <div>
         <img
           src={imageUrl}
-          alt={`${placeName} 이미지`}
+          alt={`${name} 이미지`}
           className='object-cover w-full h-28'
         />
       </div>
       <div className='flex flex-col px-2 py-2'>
-        <span className='font-semibold truncate text-subbody'>{placeName}</span>
+        <span className='font-semibold truncate text-subbody'>{name}</span>
         <span className='text-gray-500 truncate text-description'>
-          {roadAddressName}
+          {address}
         </span>
         <span className='text-gray-400 text-description'>근처 {distance}m</span>
       </div>
