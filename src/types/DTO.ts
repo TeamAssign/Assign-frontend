@@ -13,3 +13,10 @@ export type PostUserProps = {
   pros: string
   cons: string
 }
+
+export type PostAcceptMenuType = {
+  type: string
+  name: string
+  accuracy: number
+  participantIds?: number[]
+}
