@@ -16,11 +16,12 @@ export type ChartValues = {
 }
 
 export type MenuStoreValues = {
-  placeName: string
-  distance: number
-  roadAddressName: string
+  name: string
+  distance: string
+  address: string
   placeUrl: string
   imageUrl: string
+  phone?: string
 }
 
 export type UserInfoType = {

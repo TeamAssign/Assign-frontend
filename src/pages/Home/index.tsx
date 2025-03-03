@@ -6,14 +6,27 @@ import { preferenceData } from '@/mocks/preferenceData'
 
 import {
   Button,
+  Loader,
   PieChart,
   PreferenceBar,
   RecommendationBar,
 } from '@/components'
+import useGetTodayRecommendation from '@/hooks/apis/recommendation/useGetTodayRecommendation'
 import { useNavigate } from 'react-router-dom'
 
 const Home = () => {
   const navigate = useNavigate()
+  const { data: todayRecommend, status: todayRecommendationStatus } =
+    useGetTodayRecommendation()
+
+  if (todayRecommendationStatus === 'pending') {
+    return (
+      <div className='flex items-center justify-center w-screen h-screen'>
+        <Loader />
+      </div>
+    )
+  }
+
   return (
     <div className='w-full'>
       <div className='grid grid-cols-3 gap-3 pb-4'>
@@ -63,8 +76,9 @@ const Home = () => {
           </h2>
         </div>
         <RecommendationBar
-          imgUrl='https://i.pinimg.com/236x/4e/56/fa/4e56fa3ef27a56c8b5e6bec2b2b18d7f.jpg'
-          menu='피자'
+          imgUrl={todayRecommend.imageUrl}
+          menu={todayRecommend.name}
+          accuracy={todayRecommend.accuracy}
         />
       </div>
       <div className='flex flex-col gap-1 py-4'>

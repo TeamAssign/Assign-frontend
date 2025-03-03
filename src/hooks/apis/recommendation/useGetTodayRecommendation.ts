@@ -2,11 +2,11 @@ import { getTodayRecommendation } from '@/apis/recommendation/getTodayRecommenda
 import { useQuery } from '@tanstack/react-query'
 
 const useGetTodayRecommendation = () => {
-  const { data } = useQuery({
+  const { data, status } = useQuery({
     queryKey: ['todayRecommendation'],
     queryFn: getTodayRecommendation,
   })
-  return { data }
+  return { data, status }
 }
 
 export default useGetTodayRecommendation
