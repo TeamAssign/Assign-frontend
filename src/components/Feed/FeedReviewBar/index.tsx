@@ -4,6 +4,7 @@ import { Participant } from '@/types'
 import { useEffect, useRef, useState } from 'react'
 
 interface FeedReviewBarProps {
+  feedType: string
   recommendationId?: number
   imgUrl: string
   category: string
@@ -13,9 +14,11 @@ interface FeedReviewBarProps {
   star: number
   isRecommendation: boolean
   participants: Participant[]
+  isContainedTeam?: boolean
 }
 
 const FeedReviewBar = ({
+  feedType,
   imgUrl,
   category,
   type,
@@ -25,6 +28,7 @@ const FeedReviewBar = ({
   isRecommendation,
   participants,
   recommendationId,
+  isContainedTeam,
 }: FeedReviewBarProps) => {
   const [isCommentExpanded, setIsCommentExpanded] = useState(false)
   const [needsExpansion, setNeedsExpansion] = useState(false)
@@ -37,7 +41,6 @@ const FeedReviewBar = ({
       const isOverflowing = element.scrollHeight > element.clientHeight
       setNeedsExpansion(isOverflowing)
     }
-    //따로 resize를 판별하는 코드는 추가하지 않았습니다.
   }, [comment])
 
   const toggleComment = () => {
@@ -87,10 +90,24 @@ const FeedReviewBar = ({
             )}
           </div>
         </div>
-
-        <Button onClick={() => setIsModalOpen(true)} variant='black' size='sm'>
-          같은 메뉴 먹기
-        </Button>
+        {feedType === 'team' && isContainedTeam && (
+          <Button
+            onClick={() => setIsModalOpen(true)}
+            variant='black'
+            size='sm'
+          >
+            같은 메뉴 먹기
+          </Button>
+        )}
+        {feedType === 'user' && (
+          <Button
+            onClick={() => setIsModalOpen(true)}
+            variant='black'
+            size='sm'
+          >
+            같은 메뉴 먹기
+          </Button>
+        )}
       </div>
       {isModalOpen && (
         <Modal
