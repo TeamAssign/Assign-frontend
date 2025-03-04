@@ -19,12 +19,14 @@ const App = () => {
     setTokenProvider(() => getAccessTokenSilently())
   }, [getAccessTokenSilently])
 
-  if (teamData && teamStatus === 'success') {
-    setTeams(teamData)
-  }
-  if (myInfoData && myInfoStatus === 'success') {
-    setUserInfo(myInfoData)
-  }
+  useEffect(() => {
+    if (teamData && teamStatus === 'success') {
+      setTeams(teamData)
+    }
+    if (myInfoData && myInfoStatus === 'success') {
+      setUserInfo(myInfoData)
+    }
+  }, [myInfoData, setTeams, myInfoStatus, setUserInfo, teamData, teamStatus])
 
   return <Routes />
 }
