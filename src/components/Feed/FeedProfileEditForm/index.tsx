@@ -151,6 +151,12 @@ const FeedProfileEditForm = ({
                     })
                   }}
                 />
+                {errors.flavors?.sweet && (
+                  <p className='font-semibold text-red-500 text-description'>
+                    {errors.flavors.sweet.message}
+                  </p>
+                )}
+
                 <FlavorStatItem
                   defaultValue={field.value.salty}
                   type='salty'
@@ -162,6 +168,12 @@ const FeedProfileEditForm = ({
                     })
                   }}
                 />
+                {errors.flavors?.salty && (
+                  <p className='font-semibold text-red-500 text-description'>
+                    {errors.flavors.salty.message}
+                  </p>
+                )}
+
                 <FlavorStatItem
                   defaultValue={field.value.spicy}
                   type='spicy'
@@ -173,6 +185,11 @@ const FeedProfileEditForm = ({
                     })
                   }}
                 />
+                {errors.flavors?.spicy && (
+                  <p className='font-semibold text-red-500 text-description'>
+                    {errors.flavors.spicy.message}
+                  </p>
+                )}
               </div>
             )}
           />
