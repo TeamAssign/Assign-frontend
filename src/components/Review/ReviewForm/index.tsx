@@ -69,8 +69,7 @@ const ReviewForm = ({
     resolver: zodResolver(ReviewFormSchema),
   })
 
-  const { data, status } = useGetUsersList()
-  console.log(status)
+  const { data } = useGetUsersList()
   const allUsers = useMemo(() => {
     if (!data) return []
     return data.pages.flatMap((page) => page.content)
