@@ -2,9 +2,12 @@ import DissatisfiedIcon from '@/assets/icons/DissatisfiedIcon.svg?react'
 import EditIcon from '@/assets/icons/EditIcon.svg?react'
 import SatisfiedIcon from '@/assets/icons/SatisfiedIcon.svg?react'
 import { FeedProfileEditForm, FlavorStatItem, Modal } from '@/components'
+import { useUserStore } from '@/store/UserInfoStore'
 import { useState } from 'react'
+import { useParams } from 'react-router-dom'
 
 interface FeedProfileInfoProps {
+  type: string
   profileImageUrl?: string
   teams: string
   name?: string
@@ -16,6 +19,7 @@ interface FeedProfileInfoProps {
 }
 
 const FeedProfileInfo = ({
+  type,
   profileImageUrl,
   teams,
   name,
@@ -26,6 +30,8 @@ const FeedProfileInfo = ({
   cons,
 }: FeedProfileInfoProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const myTeamId = useUserStore((state) => state.teamId)
+  const { teamId } = useParams()
 
   return (
     <section className='w-full flex gap-4 flex-col border-[1px] border-light-gray p-3 rounded-lg text-main-black'>
@@ -44,19 +50,42 @@ const FeedProfileInfo = ({
             <div className='px-2 py-1 rounded-lg bg-sub-2 '>
               <span className='text-white'>{teams}</span>
             </div>
-            <EditIcon
-              className='cursor-pointer'
-              onClick={() => setIsModalOpen(true)}
-            />
+            {type === 'team' && String(myTeamId) === teamId && (
+              <EditIcon
+                className='cursor-pointer'
+                onClick={() => setIsModalOpen(true)}
+              />
+            )}
+            {type === 'user' && (
+              <EditIcon
+                className='cursor-pointer'
+                onClick={() => setIsModalOpen(true)}
+              />
+            )}
           </div>
           {name && <span>{name}</span>}
         </div>
       </div>
       <div className='flex flex-col w-full gap-3'>
         <span>🍽️ 음식 성향</span>
-        <FlavorStatItem defaultValue={sweet} type='sweet' label='단 맛' />
-        <FlavorStatItem defaultValue={salty} type='salty' label='짠 맛' />
-        <FlavorStatItem defaultValue={spicy} type='spicy' label='매운 맛' />
+        <FlavorStatItem
+          isDisabled={true}
+          defaultValue={sweet}
+          type='sweet'
+          label='단 맛'
+        />
+        <FlavorStatItem
+          isDisabled={true}
+          defaultValue={salty}
+          type='salty'
+          label='짠 맛'
+        />
+        <FlavorStatItem
+          isDisabled={true}
+          defaultValue={spicy}
+          type='spicy'
+          label='매운 맛'
+        />
         <div className='flex w-full gap-3 text-subbody'>
           <SatisfiedIcon className='flex-shrink-0 w-5 h-5' />
           <p className='w-4/5'>{pros}</p>
