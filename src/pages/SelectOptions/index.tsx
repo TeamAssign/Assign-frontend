@@ -89,6 +89,9 @@ const SelectOptions = () => {
     setCategory(value)
   }
 
+  const isButtonDisabled =
+    !category || (eatType === '그룹' && members.length === 0)
+
   return (
     <div className='flex flex-col w-full gap-4'>
       <div className='flex flex-col w-full gap-2'>
@@ -127,7 +130,7 @@ const SelectOptions = () => {
             />
           </div>
         )}
-        {(eatType === '그룹' || eatType === '회식') && (
+        {eatType === '그룹' && (
           <>
             <div className='flex gap-4 overflow-x-auto scrollbar-hide whitespace-nowrap'>
               {members.map((member) => (
@@ -184,6 +187,11 @@ const SelectOptions = () => {
             </div>
           </>
         )}
+        {eatType === '회식' && (
+          <div className='px-2 py-1 rounded-lg bg-sub-2 w-fit'>
+            <span className='text-white'>{teamName}</span>
+          </div>
+        )}
         {hasNextPage && (
           <div ref={userRef}>
             <section className='flex items-center justify-center w-full'>
@@ -193,7 +201,9 @@ const SelectOptions = () => {
         )}
       </div>
 
-      <Button onClick={handleClick}>선택 완료</Button>
+      <Button onClick={handleClick} disabled={isButtonDisabled}>
+        선택 완료
+      </Button>
     </div>
   )
 }

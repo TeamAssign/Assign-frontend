@@ -1,10 +1,5 @@
 import { z } from 'zod'
 
-const ImageSchema = z.union([
-  z.instanceof(File),
-  z.string().url('사진을 입력해주세요'),
-])
-
 const ProfileFormSchema = z.object({
   flavors: z.object({
     sweet: z.number().min(0).max(5),
@@ -19,7 +14,7 @@ const ProfileFormSchema = z.object({
     .string()
     .min(15, '15자 이상 입력해주세요')
     .max(100, '100자 이내로 입력해주세요'),
-  profileImageUrl: ImageSchema,
+  profileImageUrl: z.string().optional(),
 })
 
 type ProfileFormValues = z.infer<typeof ProfileFormSchema>

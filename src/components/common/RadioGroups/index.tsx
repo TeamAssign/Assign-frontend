@@ -1,7 +1,7 @@
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 
-const EAT_TYPES_LIST = ['혼밥 먹기', '같이 먹기', '회식']
+const EAT_TYPES_LIST = ['혼밥', '그룹', '회식']
 
 interface RadioGroupsType {
   isEdit: boolean
