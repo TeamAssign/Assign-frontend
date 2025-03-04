@@ -81,6 +81,7 @@ const FeedProfileInfo = ({
               pros={pros}
               cons={cons}
               profileImageUrl={profileImageUrl}
+              onClose={() => setIsModalOpen(false)}
             />
           }
         />
