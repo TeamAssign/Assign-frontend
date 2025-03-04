@@ -3,59 +3,70 @@ import {
   Button,
   FeedProfileInfo,
   FeedReviewBar,
+  Loader,
   Modal,
   PieChart,
   ReviewForm,
   SelectBox,
 } from '@/components'
-import { ProfileInfo } from '@/mocks/feedUserProfileData'
+import useGetTeamFeedInfo from '@/hooks/apis/team/useGetTeamFeedInfo'
 import { teamReviewData } from '@/mocks/reviewData'
-import { teams } from '@/mocks/teamsData'
 import { teamStatsData } from '@/mocks/teamStatsData'
+import { useTeamStore } from '@/store/TeamStore'
 import { PlusIcon } from 'lucide-react'
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 const Team = () => {
   const { teamId } = useParams()
-  const [selectedTeam, setSelectedTeam] = useState<string | undefined>(teamId)
   const navigate = useNavigate()
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const teams = useTeamStore((state) => state.teams)
+
+  const { data: teamFeendInfo, status } = useGetTeamFeedInfo(teamId || '')
+
+  if (status === 'pending') {
+    return (
+      <div className='flex items-center justify-center w-screen h-screen'>
+        <Loader />
+      </div>
+    )
+  }
 
   const handleSelectChange = (value: string) => {
-    setSelectedTeam(value)
-    navigate(`/teams/${value}`)
+    const team = teams.find((team) => team.name.trim() === value.trim())
+    navigate(`/teams/${team?.id}`)
   }
   return (
-    <section className='w-full flex flex-col gap-4'>
-      <div className='w-full flex flex-col gap-2'>
-        <span className='text-sub-2 font-bold text-title'>
+    <section className='flex flex-col w-full gap-4'>
+      <div className='flex flex-col w-full gap-2'>
+        <span className='font-bold text-sub-2 text-title'>
           💁🏻‍♂️ 다른 팀은 어떤 메뉴를 먹었을까요?
         </span>
         <SelectBox
           placeholder='팀을 선택해주세요.'
           values={teams}
           onChange={handleSelectChange}
-          defaultValue={selectedTeam}
+          defaultValue={teamFeendInfo.team}
           label='Teams'
         />
       </div>
       <FeedProfileInfo
-        teams={ProfileInfo.teams}
-        spicy={ProfileInfo.spicy}
-        salty={ProfileInfo.salty}
-        sweet={ProfileInfo.sweet}
-        pros={ProfileInfo.pros}
-        cons={ProfileInfo.cons}
+        teams={teamFeendInfo.team}
+        spicy={teamFeendInfo.spicy}
+        salty={teamFeendInfo.salty}
+        sweet={teamFeendInfo.sweet}
+        pros={teamFeendInfo.pros}
+        cons={teamFeendInfo.cons}
       />
       <div className='flex flex-col gap-2'>
-        <span className='text-sub-2 font-bold text-title'>📊 팀 통계</span>
+        <span className='font-bold text-sub-2 text-title'>📊 팀 통계</span>
         <PieChart data={teamStatsData.categories} />
         <BarChart menu={teamStatsData.menu} />
       </div>
       <div className='w-full'>
-        <div className='flex gap-4 items-center'>
-          <span className='text-sub-2 font-bold text-title'>
+        <div className='flex items-center gap-4'>
+          <span className='font-bold text-sub-2 text-title'>
             🍽️ 팀이 먹은 메뉴
           </span>
           <Button
