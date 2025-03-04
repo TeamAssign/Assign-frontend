@@ -1,3 +1,5 @@
+import { Participant } from '@/types'
+
 // DTO에 해당되는 타입들 여기로 분리
 export type TeamResponse = {
   id: number
@@ -19,4 +21,15 @@ export type PostAcceptMenuType = {
   name: string
   accuracy: number
   participantIds?: number[]
+}
+
+export type HistoryType = {
+  recommendationId: number
+  reviewed: boolean
+  type: string
+  imageUrl: string
+  name: string
+  accuracy: number
+  participants: Participant[] | []
+  category: string
 }
