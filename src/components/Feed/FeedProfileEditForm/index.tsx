@@ -1,9 +1,11 @@
 import ImageIcon from '@/assets/icons/image-icon.svg?react'
 import { Button, FlavorStatItem, TextArea } from '@/components'
+import usePutTeamFeedInfo from '@/hooks/apis/team/usePutTeamFeedInfo'
 import { ProfileFormSchema, ProfileFormValues } from '@/schemas/profileSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ChangeEvent, useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useParams } from 'react-router-dom'
 
 interface FeedProfileEditFormProps {
   type: 'team' | 'person'
@@ -13,6 +15,7 @@ interface FeedProfileEditFormProps {
   pros: string
   cons: string
   profileImageUrl?: string
+  onClose?: (status: boolean) => void
 }
 
 const FeedProfileEditForm = ({
@@ -23,6 +26,7 @@ const FeedProfileEditForm = ({
   pros,
   cons,
   profileImageUrl,
+  onClose,
 }: FeedProfileEditFormProps) => {
   const {
     control,
@@ -39,16 +43,26 @@ const FeedProfileEditForm = ({
       },
       pros: pros || '',
       cons: cons || '',
-      profileImageUrl: profileImageUrl || '',
+      ...(profileImageUrl ? { profileImageUrl } : {}),
     },
     resolver: zodResolver(ProfileFormSchema),
   })
 
   const [previewImg, setPreviewImg] = useState<string>(profileImageUrl || '')
   const fileInputRef = useRef<HTMLInputElement | null>(null)
+  const { teamId } = useParams()
+  const { mutate: putTeamFeed, status: putTeamInfoStatus } = usePutTeamFeedInfo(
+    teamId || '',
+  )
 
   const handleClickSubmit = (data: ProfileFormValues) => {
-    console.log(data)
+    if (type === 'team') {
+      putTeamFeed(data)
+    }
+  }
+
+  if (putTeamInfoStatus === 'success' && onClose) {
+    onClose(false)
   }
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -61,7 +75,7 @@ const FeedProfileEditForm = ({
       }
 
       fileReader.readAsDataURL(imageFile)
-      setValue('profileImageUrl', imageFile)
+      //setValue('profileImageUrl', imageFile)
     } else {
       setPreviewImg('')
       setValue('profileImageUrl', '')
@@ -76,12 +90,12 @@ const FeedProfileEditForm = ({
       >
         {type === 'person' && (
           <div className='flex flex-col gap-2'>
-            <span className='text-title text-sub-2 font-bold'>
+            <span className='font-bold text-title text-sub-2'>
               프로필 이미지 수정
             </span>
-            <div className='w-full flex items-center gap-4'>
+            <div className='flex items-center w-full gap-4'>
               {previewImg && (
-                <div className=' w-24 h-24'>
+                <div className='w-24 h-24 '>
                   <img
                     className='object-cover w-full h-full rounded-full border-[1px] border-light-gray'
                     src={previewImg}
@@ -112,7 +126,7 @@ const FeedProfileEditForm = ({
         )}
 
         <div className='flex flex-col gap-2'>
-          <span className='text-title text-sub-2 font-bold'>🍽️ 음식 성향</span>
+          <span className='font-bold text-title text-sub-2'>🍽️ 음식 성향</span>
           <Controller
             name='flavors'
             control={control}
@@ -156,7 +170,7 @@ const FeedProfileEditForm = ({
           />
         </div>
         <div className='flex flex-col gap-2'>
-          <span className='text-title text-sub-2 font-bold'>
+          <span className='font-bold text-title text-sub-2'>
             😃 이런 음식은 좋아요!
           </span>
           <TextArea
@@ -165,13 +179,13 @@ const FeedProfileEditForm = ({
             className='focus:outline-none focus:border-black'
           />
           {errors.pros && (
-            <p className='text-description font-semibold text-red-500'>
+            <p className='font-semibold text-red-500 text-description'>
               {errors.pros.message}
             </p>
           )}
         </div>
         <div>
-          <span className='text-title text-sub-2 font-bold'>
+          <span className='font-bold text-title text-sub-2'>
             ☹️ 이런 음식은 싫어요!
           </span>
           <TextArea
@@ -180,13 +194,13 @@ const FeedProfileEditForm = ({
             className='focus:outline-none focus:border-black'
           />
           {errors.cons && (
-            <p className='text-description font-semibold text-red-500'>
+            <p className='font-semibold text-red-500 text-description'>
               {errors.cons.message}
             </p>
           )}
         </div>
 
-        <Button type='submit'>후기 작성 완료</Button>
+        <Button type='submit'>프로필 수정 완료</Button>
       </form>
     </section>
   )
