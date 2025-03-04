@@ -62,7 +62,7 @@ const HistoryBar = ({
           <div className='flex items-center gap-2 text-description text-main-black'>
             <span className='font-semibold'>💻 AI가 분석한 취향 적합률</span>
             <span className='font-bold text-sub-2 text-subbody'>
-              {accuracy}%
+              {(accuracy * 100).toFixed(1)} %
             </span>
           </div>
         </div>
