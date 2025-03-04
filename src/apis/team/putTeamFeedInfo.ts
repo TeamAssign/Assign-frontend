@@ -1,7 +1,7 @@
 import { ProfileFormValues } from '@/schemas/profileSchema'
 import { axiosInstance } from '../axiosInstance'
 
-export const putTeamFoodInfo = async (id: string, data: ProfileFormValues) => {
+export const putTeamFeedInfo = async (id: string, data: ProfileFormValues) => {
   const submitData = {
     spicy: data.flavors.spicy,
     salty: data.flavors.salty,
