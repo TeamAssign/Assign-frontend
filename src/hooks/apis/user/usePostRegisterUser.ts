@@ -23,8 +23,10 @@ const usePostRegisterUser = (tokenData: string) => {
 
           const userId = decodedToken.sub
           setAuth0Token(tokenData)
-          await patchIsFirstLogin(userId)
-          window.location.reload()
+          const response = await patchIsFirstLogin(userId)
+          if (response && response.status === 200) {
+            window.location.reload()
+          }
         } catch (error) {
           console.error('사용자 정보 업데이트 중 오류가 발생했습니다.', error)
         }
