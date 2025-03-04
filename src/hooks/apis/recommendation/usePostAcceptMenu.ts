@@ -1,3 +1,4 @@
+import queryClient from '@/apis/queryClient'
 import { postAcceptMenu } from '@/apis/recommendation/postAcceptMenu'
 import { PostAcceptMenuType } from '@/types/DTO'
 import { useMutation } from '@tanstack/react-query'
@@ -8,6 +9,9 @@ const usePostAcceptMenu = (data: PostAcceptMenuType) => {
   const { mutate } = useMutation({
     mutationFn: () => postAcceptMenu(data),
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['history'],
+      })
       navigate('/history')
     },
     onError: (error) => {
