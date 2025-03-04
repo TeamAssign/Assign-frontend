@@ -33,12 +33,14 @@ const Welcome = () => {
 
   const { data: tokenData } = useGetToken()
   const { data: teamData, status: getTeamStatus } = useGetTeam()
-  const { mutate: registerUser, status: postRegisetrsStatus } =
-    usePostRegisterUser(tokenData)
+  const {
+    mutate: registerUser,
+    status: postRegisetrsStatus,
+    isSuccess,
+  } = usePostRegisterUser(tokenData)
 
   const onSubmit = handleSubmit((data) => {
-    console.log('Form data:', data)
-
+    if (isSuccess) return
     registerUser(data)
   })
 
@@ -49,8 +51,6 @@ const Welcome = () => {
       </div>
     )
   }
-
-  console.log('팀 데이터:', teamData)
 
   return (
     <div className='p-4 bg-orange-50'>
