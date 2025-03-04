@@ -33,6 +33,7 @@ const My = () => {
   return (
     <section className='flex flex-col w-full gap-4'>
       <FeedProfileInfo
+        type='user'
         profileImageUrl={userFeedInfo.imgurl}
         teams={userFeedInfo.teamName}
         name={userFeedInfo.name}
@@ -62,7 +63,7 @@ const My = () => {
 
         <div className='flex flex-col gap-3'>
           {reviewData.map((review, index) => (
-            <FeedReviewBar key={index} {...review} />
+            <FeedReviewBar feedType='user' key={index} {...review} />
           ))}
         </div>
       </div>
