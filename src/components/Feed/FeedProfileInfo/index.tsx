@@ -54,9 +54,9 @@ const FeedProfileInfo = ({
       </div>
       <div className='flex flex-col w-full gap-3'>
         <span>🍽️ 음식 성향</span>
-        <FlavorStatItem defaultValue={spicy} type='spicy' label='단 맛' />
+        <FlavorStatItem defaultValue={sweet} type='sweet' label='단 맛' />
         <FlavorStatItem defaultValue={salty} type='salty' label='짠 맛' />
-        <FlavorStatItem defaultValue={sweet} type='sweet' label='매운 맛' />
+        <FlavorStatItem defaultValue={spicy} type='spicy' label='매운 맛' />
         <div className='flex w-full gap-3 text-subbody'>
           <SatisfiedIcon className='flex-shrink-0 w-5 h-5' />
           <p className='w-4/5'>{pros}</p>
