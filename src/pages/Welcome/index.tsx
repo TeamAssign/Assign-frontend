@@ -33,7 +33,8 @@ const Welcome = () => {
 
   const { data: tokenData } = useGetToken()
   const { data: teamData, status: getTeamStatus } = useGetTeam()
-  const { mutate: registerUser } = usePostRegisterUser(tokenData)
+  const { mutate: registerUser, status: postRegisetrsStatus } =
+    usePostRegisterUser(tokenData)
 
   const onSubmit = handleSubmit((data) => {
     console.log('Form data:', data)
@@ -125,6 +126,11 @@ const Welcome = () => {
                   />
                 )}
               />
+              {errors.sweet && (
+                <p className='text-red-500 text-subbody'>
+                  {errors.sweet.message}
+                </p>
+              )}
               <Controller
                 name='salty'
                 control={control}
@@ -137,6 +143,11 @@ const Welcome = () => {
                   />
                 )}
               />
+              {errors.salty && (
+                <p className='text-red-500 text-subbody'>
+                  {errors.salty.message}
+                </p>
+              )}
               <Controller
                 name='spicy'
                 control={control}
@@ -149,6 +160,11 @@ const Welcome = () => {
                   />
                 )}
               />
+              {errors.spicy && (
+                <p className='text-red-500 text-subbody'>
+                  {errors.spicy.message}
+                </p>
+              )}
             </div>
           </div>
 
@@ -222,8 +238,12 @@ const Welcome = () => {
           </div>
         </div>
         <div className='flex justify-center w-full py-8'>
-          <Button type='submit' className='w-full'>
-            제출하기
+          <Button
+            type='submit'
+            className='w-full'
+            disabled={postRegisetrsStatus === 'pending'}
+          >
+            {postRegisetrsStatus === 'pending' ? '제출 중...' : '제출하기'}
           </Button>
         </div>
       </form>
