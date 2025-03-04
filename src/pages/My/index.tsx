@@ -26,6 +26,10 @@ const My = () => {
     )
   }
 
+  if (status === 'error') {
+    return <div>Error</div>
+  }
+
   return (
     <section className='flex flex-col w-full gap-4'>
       <FeedProfileInfo
