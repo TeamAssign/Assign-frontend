@@ -1,9 +1,10 @@
 import ImageIcon from '@/assets/icons/image-icon.svg?react'
 import { Button, FlavorStatItem, TextArea } from '@/components'
 import usePutTeamFeedInfo from '@/hooks/apis/team/usePutTeamFeedInfo'
+import usePutUserFeedInfo from '@/hooks/apis/user/usePutUserFeedInfo'
 import { ProfileFormSchema, ProfileFormValues } from '@/schemas/profileSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ChangeEvent, useRef, useState } from 'react'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 
@@ -15,7 +16,7 @@ interface FeedProfileEditFormProps {
   pros: string
   cons: string
   profileImageUrl?: string
-  onClose?: (status: boolean) => void
+  onClose: (status: boolean) => void
 }
 
 const FeedProfileEditForm = ({
@@ -54,16 +55,23 @@ const FeedProfileEditForm = ({
   const { mutate: putTeamFeed, status: putTeamInfoStatus } = usePutTeamFeedInfo(
     teamId || '',
   )
+  const { mutate: putUserFeed, status: putUserInfoStatus } =
+    usePutUserFeedInfo()
 
   const handleClickSubmit = (data: ProfileFormValues) => {
     if (type === 'team') {
       putTeamFeed(data)
     }
+    if (type === 'person') {
+      putUserFeed(data)
+    }
   }
 
-  if (putTeamInfoStatus === 'success' && onClose) {
-    onClose(false)
-  }
+  useEffect(() => {
+    if (putTeamInfoStatus === 'success' || putUserInfoStatus === 'success') {
+      onClose(false)
+    }
+  }, [putTeamInfoStatus, putUserInfoStatus, onClose])
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const imageFile = e.target.files?.[0]

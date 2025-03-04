@@ -39,10 +39,8 @@ const SelectOptions = () => {
     hasNextPage,
   } = useGetUsersList()
   console.log(status)
-  // 모든 페이지의 사용자 데이터를 하나의 배열로 병합
   const allUsers = useMemo(() => {
     if (!data) return []
-    // 모든 페이지의 content를 하나의 배열로 평탄화
     return data.pages.flatMap((page) => page.content)
   }, [data])
 
@@ -184,19 +182,19 @@ const SelectOptions = () => {
                   ))}
                 </React.Fragment>
               ))}
+              {hasNextPage && (
+                <div ref={userRef}>
+                  <section className='flex items-center justify-center w-full'>
+                    {isFetchingNextPage ? <UserSkeleton /> : null}
+                  </section>
+                </div>
+              )}
             </div>
           </>
         )}
         {eatType === '회식' && (
           <div className='px-2 py-1 rounded-lg bg-sub-2 w-fit'>
             <span className='text-white'>{teamName}</span>
-          </div>
-        )}
-        {hasNextPage && (
-          <div ref={userRef}>
-            <section className='flex items-center justify-center w-full'>
-              {isFetchingNextPage ? <UserSkeleton /> : null}
-            </section>
           </div>
         )}
       </div>
