@@ -13,6 +13,7 @@ import useGetTeamFeedInfo from '@/hooks/apis/team/useGetTeamFeedInfo'
 import { teamReviewData } from '@/mocks/reviewData'
 import { teamStatsData } from '@/mocks/teamStatsData'
 import { useTeamStore } from '@/store/TeamStore'
+import { useUserStore } from '@/store/UserInfoStore'
 import { PlusIcon } from 'lucide-react'
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -22,6 +23,8 @@ const Team = () => {
   const navigate = useNavigate()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const teams = useTeamStore((state) => state.teams)
+  const isContainedTeam =
+    teamId === String(useUserStore((state) => state.teamId))
 
   const { data: teamFeendInfo, status } = useGetTeamFeedInfo(teamId || '')
 
@@ -52,6 +55,7 @@ const Team = () => {
         />
       </div>
       <FeedProfileInfo
+        type='team'
         teams={teamFeendInfo.team}
         spicy={teamFeendInfo.spicy}
         salty={teamFeendInfo.salty}
@@ -69,18 +73,25 @@ const Team = () => {
           <span className='font-bold text-sub-2 text-title'>
             🍽️ 팀이 먹은 메뉴
           </span>
-          <Button
-            onClick={() => setIsModalOpen(true)}
-            variant='black'
-            className='w-8 h-8'
-          >
-            <PlusIcon />
-          </Button>
+          {isContainedTeam && (
+            <Button
+              onClick={() => setIsModalOpen(true)}
+              variant='black'
+              className='w-8 h-8'
+            >
+              <PlusIcon />
+            </Button>
+          )}
         </div>
 
         <div className='flex flex-col gap-3'>
           {teamReviewData.map((review, index) => (
-            <FeedReviewBar key={index} {...review} />
+            <FeedReviewBar
+              feedType='team'
+              isContainedTeam={isContainedTeam}
+              key={index}
+              {...review}
+            />
           ))}
         </div>
       </div>
