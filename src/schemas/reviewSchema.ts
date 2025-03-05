@@ -8,7 +8,7 @@ const ParticipantSchema = z.object({
 })
 
 const ReviewFormSchema = z.object({
-  recommendationId: z.number().optional(),
+  recommendationId: z.number().nullable(),
   type: z.string().min(1, '식사 유형 선택은 필수입니다'),
   menu: z.string().min(1, '메뉴명은 필수입니다'),
   reviewImg: z.string().min(1, '리뷰 이미지는 필수입니다'),
