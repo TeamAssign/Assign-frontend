@@ -1,3 +1,6 @@
+import { getImage } from '@/apis/S3/getImage'
+import { getPreSignedURL } from '@/apis/S3/getPresignedURL'
+import { uploadToS3 } from '@/apis/S3/putUploadS3'
 import ImageIcon from '@/assets/icons/image-icon.svg?react'
 import { Button, FlavorStatItem, TextArea } from '@/components'
 import usePutTeamFeedInfo from '@/hooks/apis/team/usePutTeamFeedInfo'
@@ -44,7 +47,7 @@ const FeedProfileEditForm = ({
       },
       pros: pros || '',
       cons: cons || '',
-      ...(profileImageUrl ? { profileImageUrl } : {}),
+      profileImageUrl: profileImageUrl ? profileImageUrl : '',
     },
     resolver: zodResolver(ProfileFormSchema),
   })
@@ -73,7 +76,7 @@ const FeedProfileEditForm = ({
     }
   }, [putTeamInfoStatus, putUserInfoStatus, onClose])
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const imageFile = e.target.files?.[0]
     if (imageFile) {
       const fileReader = new FileReader()
@@ -83,7 +86,16 @@ const FeedProfileEditForm = ({
       }
 
       fileReader.readAsDataURL(imageFile)
-      //setValue('profileImageUrl', imageFile)
+      try {
+        const { presignedUrl, key } = await getPreSignedURL(imageFile)
+        const response = await uploadToS3(presignedUrl, imageFile)
+        if (response && response.status === 200) {
+          const img = await getImage(key)
+          setValue('profileImageUrl', img.imageUrl)
+        }
+      } catch (error) {
+        console.error('이미지 업로드 에러:', error)
+      }
     } else {
       setPreviewImg('')
       setValue('profileImageUrl', '')
