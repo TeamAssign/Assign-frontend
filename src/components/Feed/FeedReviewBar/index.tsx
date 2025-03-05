@@ -122,6 +122,7 @@ const FeedReviewBar = ({
               category={category}
               comment={comment}
               imgUrl={imgUrl}
+              onClose={() => setIsModalOpen(false)}
             />
           }
         />

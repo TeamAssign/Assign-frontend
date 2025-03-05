@@ -41,6 +41,7 @@ interface ReviewFormProps {
   comment?: string
   category?: string
   participants?: Participant[]
+  onClose: (status: boolean) => void
 }
 
 const ReviewForm = ({
@@ -52,6 +53,7 @@ const ReviewForm = ({
   category,
   comment,
   imgUrl,
+  onClose,
 }: ReviewFormProps) => {
   const {
     register,
@@ -97,14 +99,19 @@ const ReviewForm = ({
   const rating = watch('star')
   const eatType = watch('type')
 
-  const { mutate } = usePostReview()
+  const { mutate, status } = usePostReview()
 
   useEffect(() => {
     setValue('participants', members)
   }, [members, setValue])
 
+  useEffect(() => {
+    if (status === 'success') {
+      onClose(false)
+    }
+  }, [onClose, status])
+
   const handleClickSubmit = (data: ReviewFormValues) => {
-    console.log(data)
     mutate(data)
   }
 

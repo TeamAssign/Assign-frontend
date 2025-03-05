@@ -129,7 +129,12 @@ const Team = () => {
           title='새로운 후기 등록하기'
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-          content={<ReviewForm isEditMember={true} />}
+          content={
+            <ReviewForm
+              onClose={() => setIsModalOpen(false)}
+              isEditMember={true}
+            />
+          }
         />
       )}
     </section>

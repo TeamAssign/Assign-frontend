@@ -24,20 +24,6 @@ const HistoryBar = ({
   participants,
 }: HistoryBarProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  //const commentRef = useRef<HTMLParagraphElement>(null)
-
-  // useEffect(() => {
-  //   const element = commentRef.current
-  //   if (element) {
-  //     const isOverflowing = element.scrollHeight > element.clientHeight
-  //     setNeedsExpansion(isOverflowing)
-  //   }
-  //   //따로 resize를 판별하는 코드는 추가하지 않았습니다.
-  // }, [comment])
-
-  // const toggleComment = () => {
-  //   setIsCommentExpanded(!isCommentExpanded)
-  // }
 
   const handleClick = () => {
     setIsModalOpen(true)
@@ -85,6 +71,7 @@ const HistoryBar = ({
           content={
             <ReviewForm
               recommendationId={recommendationId}
+              onClose={() => setIsModalOpen(false)}
               type={type}
               menu={menu}
               participants={participants}
