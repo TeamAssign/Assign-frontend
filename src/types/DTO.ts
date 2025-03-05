@@ -33,3 +33,15 @@ export type HistoryType = {
   participants: Participant[] | []
   category: string
 }
+
+export type ReviewType = {
+  category: string
+  comment: string
+  menu: string
+  imgUrl: string
+  participants: Participant[]
+  recommendationId: number | null
+  reviewId: number
+  star: number
+  type: string
+}
