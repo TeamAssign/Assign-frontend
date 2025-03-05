@@ -1,3 +1,4 @@
+import { getImage } from '@/apis/S3/getImage'
 import { getPreSignedURL } from '@/apis/S3/getPresignedURL'
 import { uploadToS3 } from '@/apis/S3/putUploadS3'
 import CancelCircleIcon from '@/assets/icons/cancel-circle.svg?react'
@@ -29,11 +30,12 @@ import { Participant } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 
 interface ReviewFormProps {
   isEditMember: boolean
   type?: string
-  recommendationId?: number
+  recommendationId?: number | null
   menu?: string
   imgUrl?: string
   comment?: string
@@ -60,10 +62,10 @@ const ReviewForm = ({
     formState: { errors },
   } = useForm({
     defaultValues: {
-      ...(recommendationId && { recommendationId }),
+      recommendationId: recommendationId ? recommendationId : null,
       type: type || '',
       menu: menu || '',
-      reviewImg: '',
+      reviewImg: imgUrl || '',
       comment: comment || '',
       category: category || '',
       star: 0,
@@ -102,6 +104,7 @@ const ReviewForm = ({
   }, [members, setValue])
 
   const handleClickSubmit = (data: ReviewFormValues) => {
+    console.log(data)
     mutate(data)
   }
 
@@ -122,13 +125,14 @@ const ReviewForm = ({
 
       try {
         const { presignedUrl, key } = await getPreSignedURL(imageFile)
-        console.log(key)
         const response = await uploadToS3(presignedUrl, imageFile)
         if (response && response.status === 200) {
-          setValue('reviewImg', key)
+          const img = await getImage(key)
+          setValue('reviewImg', img.imageUrl)
         }
       } catch (error) {
-        console.error('Upload error:', error)
+        toast.error('이미지 업로드 실패')
+        console.error('이미지 업로드 에러:', error)
       }
     } else {
       setPreviewImg('')
