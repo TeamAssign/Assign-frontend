@@ -5,14 +5,13 @@ import { useEffect, useRef, useState } from 'react'
 
 interface FeedReviewBarProps {
   feedType: string
-  recommendationId?: number
+  recommendationId: number | null
   imgUrl: string
   category: string
   type: string
   menu: string
   comment: string
   star: number
-  isRecommendation: boolean
   participants: Participant[]
   isContainedTeam?: boolean
 }
@@ -25,7 +24,6 @@ const FeedReviewBar = ({
   menu,
   comment,
   star,
-  isRecommendation,
   participants,
   recommendationId,
   isContainedTeam,
@@ -61,7 +59,7 @@ const FeedReviewBar = ({
           <div className='flex gap-2'>
             <Tag color='red' children={type} />
             <Tag color='lightGreen' children={category} />
-            {isRecommendation && <Tag color='darkGreen' children='AI 추천' />}
+            {recommendationId && <Tag color='darkGreen' children='AI 추천' />}
           </div>
           <div className='font-bold'>{menu}</div>
           <div className='flex gap-0.5'>

@@ -1,3 +1,6 @@
+import { getImage } from '@/apis/S3/getImage'
+import { getPreSignedURL } from '@/apis/S3/getPresignedURL'
+import { uploadToS3 } from '@/apis/S3/putUploadS3'
 import CancelCircleIcon from '@/assets/icons/cancel-circle.svg?react'
 import ImageIcon from '@/assets/icons/image-icon.svg?react'
 import {
@@ -18,6 +21,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { FOOD_CATEGORIES } from '@/constant'
+import usePostReview from '@/hooks/apis/feed/usePostReview'
 import useGetUsersList from '@/hooks/apis/user/useGetUsersList'
 import useSearchMember from '@/hooks/useSearchMember'
 import { cn } from '@/lib/utils'
@@ -26,11 +30,12 @@ import { Participant } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 
 interface ReviewFormProps {
   isEditMember: boolean
   type?: string
-  recommendationId?: number
+  recommendationId?: number | null
   menu?: string
   imgUrl?: string
   comment?: string
@@ -57,10 +62,10 @@ const ReviewForm = ({
     formState: { errors },
   } = useForm({
     defaultValues: {
-      ...(recommendationId && { recommendationId }),
+      recommendationId: recommendationId ? recommendationId : null,
       type: type || '',
       menu: menu || '',
-      reviewImg: null,
+      reviewImg: imgUrl || '',
       comment: comment || '',
       category: category || '',
       star: 0,
@@ -90,6 +95,9 @@ const ReviewForm = ({
   const [previewImg, setPreviewImg] = useState<string>(imgUrl || '')
 
   const rating = watch('star')
+  const eatType = watch('type')
+
+  const { mutate } = usePostReview()
 
   useEffect(() => {
     setValue('participants', members)
@@ -97,13 +105,14 @@ const ReviewForm = ({
 
   const handleClickSubmit = (data: ReviewFormValues) => {
     console.log(data)
+    mutate(data)
   }
 
   const handleStarClick = (index: number) => {
     setValue('star', index + 1)
   }
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const imageFile = e.target.files?.[0]
     if (imageFile) {
       const fileReader = new FileReader()
@@ -113,10 +122,21 @@ const ReviewForm = ({
       }
 
       fileReader.readAsDataURL(imageFile)
-      setValue('reviewImg', imageFile)
+
+      try {
+        const { presignedUrl, key } = await getPreSignedURL(imageFile)
+        const response = await uploadToS3(presignedUrl, imageFile)
+        if (response && response.status === 200) {
+          const img = await getImage(key)
+          setValue('reviewImg', img.imageUrl)
+        }
+      } catch (error) {
+        toast.error('이미지 업로드 실패')
+        console.error('이미지 업로드 에러:', error)
+      }
     } else {
       setPreviewImg('')
-      setValue('reviewImg', null)
+      setValue('reviewImg', '')
     }
   }
 
@@ -176,51 +196,52 @@ const ReviewForm = ({
               accept='image/*'
               onChange={handleFileChange}
             />
+            {errors.reviewImg && (
+              <p className='font-semibold text-red-500 text-description'>
+                {errors.reviewImg.message}
+              </p>
+            )}
           </div>
         </div>
-        <div className='flex flex-col gap-2'>
-          <h1 className='font-semibold text-sub-2'>먹은 사람 등록</h1>
-          {isEditMember && (
-            <div className='relative'>
-              <Input
-                placeholder='이름을 검색해주세요'
-                value={searchInput}
-                className='focus:outline-none focus:border-black'
-                onChange={handleMemberInputChange}
-              />
-              <SearchDropDown
-                ref={ref}
-                isOpen={isOpenMemberDropDown}
-                onClick={handleSelectMember}
-                memberList={searchMemberList}
-              />
-            </div>
-          )}
-
-          <div className='flex items-center gap-4 overflow-x-auto whitespace-nowrap '>
-            {members.map((member) => (
-              <div className='relative py-2' key={member.id}>
-                <Avatar
-                  imgUrl={member.profileImageUrl}
-                  text={member.name}
-                  name={member.name}
-                  department={member.teamName}
+        {eatType === '그룹' && (
+          <div className='flex flex-col gap-2'>
+            <h1 className='font-semibold text-sub-2'>같이 먹은 사람 등록</h1>
+            {isEditMember && (
+              <div className='relative'>
+                <Input
+                  placeholder='이름을 검색해주세요'
+                  value={searchInput}
+                  className='focus:outline-none focus:border-black'
+                  onChange={handleMemberInputChange}
                 />
-                {isEditMember && (
-                  <CancelCircleIcon
-                    onClick={() => handleDeleteMember(member.id)}
-                    className='absolute top-0 cursor-pointer -right-2'
-                  />
-                )}
+                <SearchDropDown
+                  ref={ref}
+                  isOpen={isOpenMemberDropDown}
+                  onClick={handleSelectMember}
+                  memberList={searchMemberList}
+                />
               </div>
-            ))}
+            )}
+            <div className='flex items-center gap-4 overflow-x-auto whitespace-nowrap '>
+              {members.map((member) => (
+                <div className='relative py-2' key={member.id}>
+                  <Avatar
+                    imgUrl={member.profileImageUrl}
+                    text={member.name}
+                    name={member.name}
+                    department={member.teamName}
+                  />
+                  {isEditMember && (
+                    <CancelCircleIcon
+                      onClick={() => handleDeleteMember(member.id)}
+                      className='absolute top-0 cursor-pointer -right-2'
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
-          {members.length === 0 && errors.participants && (
-            <p className='font-semibold text-red-500 text-description'>
-              {errors.participants.message}
-            </p>
-          )}
-        </div>
+        )}
         <div className='flex flex-col gap-2'>
           <h1 className='font-semibold text-sub-2'>메뉴 명</h1>
           <Input

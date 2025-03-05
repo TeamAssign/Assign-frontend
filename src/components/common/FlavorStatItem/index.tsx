@@ -1,5 +1,5 @@
 import { Slider } from '@/components/ui/slider'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 interface FlavorStatItemProps {
   defaultValue: number
@@ -18,11 +18,16 @@ const FlavorStatItem = ({
 }: FlavorStatItemProps) => {
   const [currentValue, setCurrentValue] = useState<number>(defaultValue)
 
+  useEffect(() => {
+    setCurrentValue(defaultValue)
+  }, [defaultValue])
+
   return (
     <section className='flex items-center w-full gap-3 text-subbody'>
       <span className='font-semibold w-14 text-main-black'>{label}</span>
       <div className='flex items-center w-full gap-3'>
         <Slider
+          value={[currentValue]}
           onValueChange={(value) => {
             setCurrentValue(value[0])
             if (onValueChange) {
@@ -30,7 +35,6 @@ const FlavorStatItem = ({
             }
           }}
           className='w-full'
-          defaultValue={[defaultValue]}
           max={5}
           step={0.01}
           disabled={isDisabled}

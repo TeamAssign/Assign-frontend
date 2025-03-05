@@ -1,6 +1,7 @@
 import {
   BarChart,
   Button,
+  CardSkeleton,
   FeedProfileInfo,
   FeedReviewBar,
   Loader,
@@ -9,13 +10,14 @@ import {
   ReviewForm,
   SelectBox,
 } from '@/components'
+import useGetTeamReviews from '@/hooks/apis/feed/useGetTeamReviews'
+import useGetTeamSummary from '@/hooks/apis/summary/useGetTeamSummary'
 import useGetTeamFeedInfo from '@/hooks/apis/team/useGetTeamFeedInfo'
-import { teamReviewData } from '@/mocks/reviewData'
-import { teamStatsData } from '@/mocks/teamStatsData'
 import { useTeamStore } from '@/store/TeamStore'
 import { useUserStore } from '@/store/UserInfoStore'
+import { ReviewType } from '@/types/DTO'
 import { PlusIcon } from 'lucide-react'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 const Team = () => {
@@ -26,9 +28,21 @@ const Team = () => {
   const isContainedTeam =
     teamId === String(useUserStore((state) => state.teamId))
 
-  const { data: teamFeendInfo, status } = useGetTeamFeedInfo(teamId || '')
+  const { data: teamFeedInfo, status: teamInfoStatus } = useGetTeamFeedInfo(
+    teamId || '',
+  )
+  const {
+    data: teamReviewsData,
+    hasNextPage,
+    isFetchingNextPage,
+    ref,
+  } = useGetTeamReviews(teamId || '')
 
-  if (status === 'pending') {
+  const { data: teamSummary, status: teamSummaryStatus } = useGetTeamSummary(
+    teamId || '',
+  )
+
+  if (teamInfoStatus === 'pending' || teamSummaryStatus === 'pending') {
     return (
       <div className='flex items-center justify-center w-screen h-screen'>
         <Loader />
@@ -50,23 +64,27 @@ const Team = () => {
           placeholder='팀을 선택해주세요.'
           values={teams}
           onChange={handleSelectChange}
-          defaultValue={teamFeendInfo.team}
+          defaultValue={teamFeedInfo.team}
           label='Teams'
         />
       </div>
-      <FeedProfileInfo
-        type='team'
-        teams={teamFeendInfo.team}
-        spicy={teamFeendInfo.spicy}
-        salty={teamFeendInfo.salty}
-        sweet={teamFeendInfo.sweet}
-        pros={teamFeendInfo.pros}
-        cons={teamFeendInfo.cons}
-      />
+      {teamFeedInfo === 'error' && <div>error</div>}
+      {teamFeedInfo && (
+        <FeedProfileInfo
+          type='team'
+          teams={teamFeedInfo.team}
+          spicy={teamFeedInfo.spicy}
+          salty={teamFeedInfo.salty}
+          sweet={teamFeedInfo.sweet}
+          pros={teamFeedInfo.pros}
+          cons={teamFeedInfo.cons}
+        />
+      )}
+
       <div className='flex flex-col gap-2'>
         <span className='font-bold text-sub-2 text-title'>📊 팀 통계</span>
-        <PieChart data={teamStatsData.categories} />
-        <BarChart menu={teamStatsData.menu} />
+        {teamSummary && <PieChart data={teamSummary.statistics.categories} />}
+        {teamSummary && <BarChart menu={teamSummary.statistics.menu} />}
       </div>
       <div className='w-full'>
         <div className='flex items-center gap-4'>
@@ -85,14 +103,25 @@ const Team = () => {
         </div>
 
         <div className='flex flex-col gap-3'>
-          {teamReviewData.map((review, index) => (
-            <FeedReviewBar
-              feedType='team'
-              isContainedTeam={isContainedTeam}
-              key={index}
-              {...review}
-            />
+          {teamReviewsData?.pages.map((page, pageIndex) => (
+            <React.Fragment key={pageIndex}>
+              {page.content.map((review: ReviewType) => (
+                <FeedReviewBar
+                  feedType='team'
+                  isContainedTeam={isContainedTeam}
+                  key={review.reviewId}
+                  {...review}
+                />
+              ))}
+            </React.Fragment>
           ))}
+          {hasNextPage && (
+            <div ref={ref}>
+              <section className='w-full h-16'>
+                {isFetchingNextPage ? <CardSkeleton /> : null}
+              </section>
+            </div>
+          )}
         </div>
       </div>
       {isModalOpen && (

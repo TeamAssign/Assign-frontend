@@ -3,24 +3,15 @@ interface PreferenceBarProps {
   price: string
   keyword: string[]
   accuracy: number
-  accuracyBefore: number
 }
 
-const PreferenceBar = ({
-  price,
-  keyword,
-  accuracy,
-  accuracyBefore,
-}: PreferenceBarProps) => {
-  const accuracyIncrease = accuracy - accuracyBefore
-  const isPositiveChange = accuracyIncrease >= 0
-
+const PreferenceBar = ({ price, keyword, accuracy }: PreferenceBarProps) => {
   return (
     <div className='w-full p-4 mb-4 bg-white rounded-lg shadow-md'>
       <div className='flex items-center justify-between mb-3'>
         <div className='flex-1'>
           <h3 className='font-bold text-gray-800 text-subbody'>선호도 분석</h3>
-          <div className='flex flex-wrap items-center gap-2 p-1'>
+          <div className='flex flex-col flex-wrap gap-2 p-1'>
             <span className='font-medium text-gray-700'>{price}</span>
             <div className='flex items-center gap-2'>
               <div className='flex flex-wrap gap-1'>
@@ -48,19 +39,6 @@ const PreferenceBar = ({
                 </div>
               </div>
             </div>
-          </div>
-          <div className='flex items-center mt-1'>
-            <span className='text-gray-500 text-subbody'>
-              이전: {accuracyBefore.toFixed(1)}%
-            </span>
-            <span
-              className={`ml-2 text-subbody ${
-                isPositiveChange ? 'text-green-500' : 'text-red-500'
-              }`}
-            >
-              {isPositiveChange ? '+' : ''}
-              {accuracyIncrease.toFixed(1)}%
-            </span>
           </div>
         </div>
       </div>

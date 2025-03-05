@@ -2,7 +2,6 @@ import CalendarIcon from '@/assets/icons/CalendarIcon.svg?react'
 import SoloIcon from '@/assets/icons/SoloIcon.svg?react'
 import TogetherIcon from '@/assets/icons/TogetherIcon.svg?react'
 import { homeStatsData } from '@/mocks/homeStatsData'
-import { preferenceData } from '@/mocks/preferenceData'
 
 import {
   Button,
@@ -12,6 +11,8 @@ import {
   RecommendationBar,
 } from '@/components'
 import useGetTodayRecommendation from '@/hooks/apis/recommendation/useGetTodayRecommendation'
+import useGetCompanySummary from '@/hooks/apis/summary/useGetCompanySummary'
+import useGetUserPreference from '@/hooks/apis/user/useGetUserPreferece'
 import { useNavigate } from 'react-router-dom'
 
 const Home = () => {
@@ -19,7 +20,17 @@ const Home = () => {
   const { data: todayRecommend, status: todayRecommendationStatus } =
     useGetTodayRecommendation()
 
-  if (todayRecommendationStatus === 'pending') {
+  const { data: userPreference, status: preferenceStatus } =
+    useGetUserPreference()
+
+  const { data: companySummary, status: companySummaryStatus } =
+    useGetCompanySummary()
+
+  if (
+    todayRecommendationStatus === 'pending' ||
+    preferenceStatus === 'pending' ||
+    companySummaryStatus === 'pending'
+  ) {
     return (
       <div className='flex items-center justify-center w-screen h-screen'>
         <Loader />
@@ -66,7 +77,7 @@ const Home = () => {
         <span className='py-1 font-bold text-sub-2 text-title'>
           🍽️ 직원들이 가장 선호하는 음식 종류는 무엇일까요?
         </span>
-        <PieChart data={homeStatsData} />
+        {companySummary && <PieChart data={homeStatsData} />}
       </div>
       <div className='flex flex-col gap-1 pb-4'>
         <div className='flex flex-col gap-2 pb-4'>
@@ -90,12 +101,13 @@ const Home = () => {
             AI가 분석한 취향 데이터입니다.
           </h2>
         </div>
-        <PreferenceBar
-          price={preferenceData.price}
-          keyword={preferenceData.keyword}
-          accuracy={preferenceData.accuracy}
-          accuracyBefore={preferenceData.accuracyBefore}
-        />
+        {userPreference && (
+          <PreferenceBar
+            price={userPreference.priceCategory}
+            keyword={userPreference.mealTags}
+            accuracy={userPreference.agreePercentage}
+          />
+        )}
       </div>
     </div>
   )
