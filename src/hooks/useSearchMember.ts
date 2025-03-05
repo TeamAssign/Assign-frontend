@@ -1,5 +1,6 @@
 import { Participant } from '@/types'
 import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react'
+import toast from 'react-hot-toast'
 import { useDebounce } from 'use-debounce'
 
 const useSearchMember = (
@@ -48,7 +49,7 @@ const useSearchMember = (
       setSearchInput('')
       setIsOpenMemberDropDown(false)
     } else {
-      alert('이미 선택되어 있는 멤버 입니다!') // 우선 alert로 해놓고 추후에 바꿀 예정
+      toast.error('이미 선택한 멤버입니다.')
     }
   }
 
