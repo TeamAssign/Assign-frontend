@@ -5,7 +5,6 @@ import React from 'react'
 
 const History = () => {
   const { data, hasNextPage, isFetchingNextPage, ref } = useGetHistories()
-  console.log(data)
   return (
     <section className='w-full'>
       <span className='font-bold text-sub-2 text-title'>
