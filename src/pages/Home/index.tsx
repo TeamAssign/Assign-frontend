@@ -41,6 +41,9 @@ const Home = () => {
 
   return (
     <div className='w-full'>
+      <p className='pb-4 font-bold text-sub-2 text-body'>
+        💻 AI를 통해 음식 메뉴를 추천 받아 보세요!
+      </p>
       <div className='grid grid-cols-3 gap-3 pb-4'>
         <Button
           variant='white'
@@ -75,14 +78,14 @@ const Home = () => {
       </div>
 
       <div className='flex flex-col gap-1'>
-        <span className='py-1 font-bold text-sub-2 text-title'>
+        <span className='py-1 font-bold text-sub-2 text-body'>
           🍽️ 직원들이 가장 선호하는 음식 종류는 무엇일까요?
         </span>
         {companySummary && <PieChart data={homeStatsData} />}
       </div>
       <div className='flex flex-col gap-1 pb-4'>
         <div className='flex flex-col gap-2 pb-4'>
-          <h1 className='font-bold text-title text-sub-2'>메뉴 추천</h1>
+          <h1 className='font-bold text-body text-sub-2'>메뉴 추천</h1>
           <h2 className='text-lg text-dark-gray'>
             오늘은 이런 메뉴는 어떠세요?
           </h2>
@@ -95,7 +98,7 @@ const Home = () => {
       </div>
       <div className='flex flex-col gap-1 py-4'>
         <div className='flex flex-col gap-2 pb-4'>
-          <span className='font-bold text-title text-sub-2'>
+          <span className='font-bold text-body text-sub-2'>
             💁🏻‍♂️ 나의 취향 분석
           </span>
           <h2 className='text-lg text-dark-gray'>
