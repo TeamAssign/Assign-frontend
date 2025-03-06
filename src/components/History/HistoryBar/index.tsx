@@ -25,18 +25,24 @@ const HistoryBar = ({
   participants,
 }: HistoryBarProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [imageSrc, setImageSrc] = useState(imgUrl || LOGO_IMAGE_URL)
 
   const handleClick = () => {
     setIsModalOpen(true)
+  }
+
+  const handleImageError = () => {
+    setImageSrc(LOGO_IMAGE_URL)
   }
 
   return (
     <div className='flex w-full gap-6 p-4 shadow-md rounded-2xl'>
       <div className='w-3/5 h-[132px]'>
         <img
-          src={imgUrl || LOGO_IMAGE_URL}
+          src={imageSrc}
           className='object-cover w-full h-full rounded-lg'
           alt={menu}
+          onError={handleImageError}
         />
       </div>
       <div className='flex flex-col w-full gap-2'>
