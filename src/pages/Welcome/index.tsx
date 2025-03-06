@@ -6,6 +6,7 @@ import {
   SelectBox,
   TextArea,
 } from '@/components'
+import { LOGO_IMAGE_URL } from '@/constant'
 import useGetToken from '@/hooks/apis/auth/useGetToken'
 import useGetTeam from '@/hooks/apis/team/useGetTeam'
 import usePostRegisterUser from '@/hooks/apis/user/usePostRegisterUser'
@@ -57,10 +58,7 @@ const Welcome = () => {
   return (
     <div className='p-4 bg-white'>
       <div className='flex justify-center w-full'>
-        <img
-          src='https://elice-assign-bucket.s3.ap-northeast-2.amazonaws.com/assign_logo.png'
-          alt='오늘 뭐 먹지?'
-        />
+        <img src={LOGO_IMAGE_URL} alt='오늘 뭐 먹지?' />
       </div>
       <div className='flex flex-col items-center w-full gap-4 font-bold text-gray-800'>
         <span>🔥 서비스 이용을 위해 인적사항을 작성해주세요</span>
