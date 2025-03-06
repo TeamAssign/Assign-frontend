@@ -113,7 +113,6 @@ const ReviewForm = ({
   }, [onClose, status])
 
   const handleClickSubmit = (data: ReviewFormValues) => {
-    console.log(data)
     mutate(data)
   }
 
