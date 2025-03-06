@@ -9,7 +9,6 @@ const useGetUsersList = () => {
       queryFn: ({ pageParam }) => getUsersList({ pageParam }),
       initialPageParam: 1,
       getNextPageParam: (lastPage) => {
-        // 다음 페이지가 있는 경우에만 다음 페이지 번호 반환, 없으면 undefined
         return lastPage.pageInfo.hasNextPage
           ? lastPage.pageInfo.currentPage + 1
           : undefined
