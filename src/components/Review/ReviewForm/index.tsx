@@ -162,7 +162,7 @@ const ReviewForm = ({
               <RadioGroups
                 isEdit={isEditMember}
                 defaultType={type}
-                onChange={field.onChange}
+                onChange={(value) => field.onChange(value)}
               />
             )}
           />
