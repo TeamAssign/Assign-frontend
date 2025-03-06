@@ -33,12 +33,10 @@ const SelectOptions = () => {
 
   const {
     data,
-    status,
     ref: userRef,
     isFetchingNextPage,
     hasNextPage,
   } = useGetUsersList()
-  console.log(status)
   const allUsers = useMemo(() => {
     if (!data) return []
     return data.pages.flatMap((page) => page.content)
@@ -164,24 +162,25 @@ const SelectOptions = () => {
               />
             </div>
             <div className='flex flex-col gap-2 py-2'>
-              {data?.pages.map((page, pageIndex) => (
-                <React.Fragment key={pageIndex}>
-                  {page.content.map((user: UserInfoType) => (
-                    <SelectBar
-                      key={user.id}
-                      id={user.id}
-                      imgUrl={user.profileImageUrl}
-                      name={user.name}
-                      department={user.teamName}
-                      text={user.name}
-                      onSelect={toggleMember}
-                      isSelected={members.some(
-                        (member) => member.id === user.id,
-                      )}
-                    />
-                  ))}
-                </React.Fragment>
-              ))}
+              {data &&
+                data.pages.map((page, pageIndex) => (
+                  <React.Fragment key={pageIndex}>
+                    {page.content.map((user: UserInfoType) => (
+                      <SelectBar
+                        key={user.id}
+                        id={user.id}
+                        imgUrl={user.profileImageUrl}
+                        name={user.name}
+                        department={user.teamName}
+                        text={user.name}
+                        onSelect={toggleMember}
+                        isSelected={members.some(
+                          (member) => member.id === user.id,
+                        )}
+                      />
+                    ))}
+                  </React.Fragment>
+                ))}
               {hasNextPage && (
                 <div ref={userRef}>
                   <section className='flex items-center justify-center w-full'>

@@ -75,17 +75,18 @@ const My = () => {
         </div>
 
         <div className='flex flex-col w-full gap-3'>
-          {reviewsData?.pages.map((page, pageIndex) => (
-            <React.Fragment key={pageIndex}>
-              {page.content.map((review: ReviewType) => (
-                <FeedReviewBar
-                  feedType='user'
-                  key={review.reviewId}
-                  {...review}
-                />
-              ))}
-            </React.Fragment>
-          ))}
+          {reviewsData &&
+            reviewsData.pages.map((page, pageIndex) => (
+              <React.Fragment key={pageIndex}>
+                {page.content.map((review: ReviewType) => (
+                  <FeedReviewBar
+                    feedType='user'
+                    key={review.reviewId}
+                    {...review}
+                  />
+                ))}
+              </React.Fragment>
+            ))}
         </div>
         {hasNextPage && (
           <div ref={ref}>

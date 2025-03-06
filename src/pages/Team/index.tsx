@@ -106,18 +106,19 @@ const Team = () => {
         </div>
 
         <div className='flex flex-col gap-3'>
-          {teamReviewsData?.pages.map((page, pageIndex) => (
-            <React.Fragment key={pageIndex}>
-              {page.content.map((review: ReviewType) => (
-                <FeedReviewBar
-                  feedType='team'
-                  isContainedTeam={isContainedTeam}
-                  key={review.reviewId}
-                  {...review}
-                />
-              ))}
-            </React.Fragment>
-          ))}
+          {teamReviewsData &&
+            teamReviewsData.pages.map((page, pageIndex) => (
+              <React.Fragment key={pageIndex}>
+                {page.content.map((review: ReviewType) => (
+                  <FeedReviewBar
+                    feedType='team'
+                    isContainedTeam={isContainedTeam}
+                    key={review.reviewId}
+                    {...review}
+                  />
+                ))}
+              </React.Fragment>
+            ))}
           {hasNextPage && (
             <div ref={ref}>
               <section className='w-full h-16'>
