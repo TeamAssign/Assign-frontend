@@ -7,6 +7,7 @@ import usePutTeamFeedInfo from '@/hooks/apis/team/usePutTeamFeedInfo'
 import usePutUserFeedInfo from '@/hooks/apis/user/usePutUserFeedInfo'
 import { ProfileFormSchema, ProfileFormValues } from '@/schemas/profileSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
+import imageCompression from 'browser-image-compression'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
@@ -87,8 +88,17 @@ const FeedProfileEditForm = ({
 
       fileReader.readAsDataURL(imageFile)
       try {
-        const { presignedUrl, key } = await getPreSignedURL(imageFile)
-        const response = await uploadToS3(presignedUrl, imageFile)
+        const options = {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 600,
+          useWebWorker: true,
+          fileType: 'image/webp',
+        }
+
+        const compressedFile = await imageCompression(imageFile, options)
+
+        const { presignedUrl, key } = await getPreSignedURL(compressedFile)
+        const response = await uploadToS3(presignedUrl, compressedFile)
         if (response && response.status === 200) {
           const img = await getImage(key)
           setValue('profileImageUrl', img.imageUrl)
