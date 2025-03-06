@@ -1,4 +1,5 @@
 import { Button, Modal, ReviewForm, Tag } from '@/components'
+import { LOGO_IMAGE_URL } from '@/constant'
 import { Participant } from '@/types'
 import { useState } from 'react'
 
@@ -33,7 +34,7 @@ const HistoryBar = ({
     <div className='flex w-full gap-6 p-4 shadow-md rounded-2xl'>
       <div className='w-3/5 h-[132px]'>
         <img
-          src={imgUrl}
+          src={imgUrl || LOGO_IMAGE_URL}
           className='object-cover w-full h-full rounded-lg'
           alt={menu}
         />

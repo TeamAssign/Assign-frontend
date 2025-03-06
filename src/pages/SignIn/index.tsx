@@ -1,4 +1,5 @@
 import { Button } from '@/components'
+import { LOGO_IMAGE_URL } from '@/constant'
 import { useAuth0 } from '@auth0/auth0-react'
 
 const SignIn = () => {
@@ -37,7 +38,7 @@ const SignIn = () => {
       <div className='w-full max-w-md p-8 text-center bg-white shadow-lg rounded-xl'>
         <div className='mb-8'>
           <img
-            src='https://elice-assign-bucket.s3.ap-northeast-2.amazonaws.com/assign_logo.png'
+            src={LOGO_IMAGE_URL}
             alt='점심 뭐먹지 로고'
             className='mx-auto mb-4 rounded-md w-26 h-26'
           />

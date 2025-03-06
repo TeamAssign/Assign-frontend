@@ -50,3 +50,6 @@ export const EAT_TYPES_ARR = [
   { key: 'together', value: '그룹' },
   { key: 'team', value: '회식' },
 ]
+
+export const LOGO_IMAGE_URL =
+  'https://elice-assign-bucket.s3.ap-northeast-2.amazonaws.com/assign_logo.png'
