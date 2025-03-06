@@ -65,7 +65,7 @@ const ReviewForm = ({
   } = useForm({
     defaultValues: {
       recommendationId: recommendationId ? recommendationId : null,
-      type: type || '',
+      type: type || '혼밥',
       menu: menu || '',
       reviewImg: imgUrl || '',
       comment: comment || '',
@@ -112,6 +112,7 @@ const ReviewForm = ({
   }, [onClose, status])
 
   const handleClickSubmit = (data: ReviewFormValues) => {
+    console.log(data)
     mutate(data)
   }
 
