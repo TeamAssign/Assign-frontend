@@ -42,9 +42,12 @@ const Team = () => {
     teamId || '',
   )
 
-  if (teamInfoStatus === 'pending' || teamSummaryStatus === 'pending') {
+  const isLoading =
+    teamInfoStatus === 'pending' || teamSummaryStatus === 'pending'
+
+  if (isLoading) {
     return (
-      <div className='flex items-center justify-center w-screen h-screen'>
+      <div className='flex items-center justify-center w-full absolute inset-0 max-w-[600px] min-h-screen mx-auto '>
         <Loader />
       </div>
     )

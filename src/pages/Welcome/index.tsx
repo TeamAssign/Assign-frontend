@@ -44,9 +44,11 @@ const Welcome = () => {
     registerUser(data)
   })
 
-  if (getTeamStatus === 'pending') {
+  const isLoading = getTeamStatus === 'pending'
+
+  if (isLoading) {
     return (
-      <div className='flex items-center justify-center h-screen'>
+      <div className='flex items-center justify-center w-full absolute inset-0 max-w-[600px] min-h-screen mx-auto '>
         <Loader />
       </div>
     )

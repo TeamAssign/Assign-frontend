@@ -28,11 +28,12 @@ const My = () => {
 
   const { data: userSummary, status: userSummaryStatus } = useGetUserSummary()
 
-  console.log(userSummary)
-  console.log(reviewsData)
-  if (userInfoStatus === 'pending' || userSummaryStatus === 'pending') {
+  const isLoading =
+    userInfoStatus === 'pending' || userSummaryStatus === 'pending'
+
+  if (isLoading) {
     return (
-      <div className='flex flex-col mx-auto min-h-screen max-w-[600px]'>
+      <div className='flex items-center justify-center w-full absolute inset-0 max-w-[600px] min-h-screen mx-auto '>
         <Loader />
       </div>
     )
