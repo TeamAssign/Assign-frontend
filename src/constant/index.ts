@@ -37,7 +37,7 @@ export const BAR_BORDER_COLORS = [
 ]
 
 export const PATH_VALUE = [
-  { path: '/', value: '점심 뭐먹지' },
+  { path: '/', value: '오늘 뭐먹지 ?' },
   { path: '/teams', value: '팀 피드' },
   { path: '/recommendation', value: '메뉴 추천' },
   { path: '/history', value: '추천 히스토리' },
