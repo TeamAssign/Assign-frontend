@@ -37,14 +37,14 @@ const SignIn = () => {
       <div className='w-full max-w-md p-8 text-center bg-white shadow-lg rounded-xl'>
         <div className='mb-8'>
           <img
-            src='/api/placeholder/150/150'
+            src='https://elice-assign-bucket.s3.ap-northeast-2.amazonaws.com/assign_logo.png'
             alt='점심 뭐먹지 로고'
-            className='w-24 h-24 mx-auto mb-4 rounded-full'
+            className='mx-auto mb-4 rounded-md w-26 h-26'
           />
           <h1 className='mb-2 text-3xl font-bold text-gray-800'>
-            점심 뭐먹지?
+            오늘 뭐 먹지?
           </h1>
-          <p className='text-gray-600'>오늘의 점심 메뉴를 추천해드립니다</p>
+          <p className='text-gray-600'>오늘의 식사 메뉴를 추천해드립니다</p>
         </div>
 
         <div className='space-y-4'>
@@ -82,7 +82,7 @@ const SignIn = () => {
         </div>
       </div>
 
-      <p className='mt-6 text-gray-500 text-subbody'>&copy; 2025 점심 뭐먹지</p>
+      <p className='mt-6 text-gray-500 text-subbody'>&copy; 오늘 뭐 먹지?</p>
     </div>
   )
 }

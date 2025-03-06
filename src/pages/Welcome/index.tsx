@@ -53,15 +53,22 @@ const Welcome = () => {
   }
 
   return (
-    <div className='p-4 bg-orange-50'>
-      <h1 className='p-8 text-3xl font-bold text-center text-gray-800'>
-        점심 뭐 먹지?
-      </h1>
+    <div className='p-4 bg-white'>
+      <div className='flex justify-center w-full'>
+        <img
+          src='https://elice-assign-bucket.s3.ap-northeast-2.amazonaws.com/assign_logo.png'
+          alt='오늘 뭐 먹지?'
+        />
+      </div>
+      <div className='flex flex-col items-center w-full gap-4 font-bold text-gray-800'>
+        <span>🔥 서비스 이용을 위해 인적사항을 작성해주세요</span>
+      </div>
+
       <form onSubmit={onSubmit}>
         <div className='space-y-8'>
           <div className='p-6 bg-white rounded-lg'>
             <p className='pb-5 text-lg font-medium text-gray-700'>
-              이름을 입력해주세요
+              💁🏻‍♂️ 이름을 입력해주세요
             </p>
             <Controller
               name='name'
@@ -85,7 +92,7 @@ const Welcome = () => {
 
           <div className='p-6 bg-white rounded-lg'>
             <p className='pb-5 text-lg font-medium text-gray-700'>
-              본인이 속한 팀을 선택해주세요
+              ✏️ 본인이 속한 팀을 선택해주세요
             </p>
             <Controller
               name='teamName'
@@ -111,7 +118,7 @@ const Welcome = () => {
 
           <div className='p-6 bg-white rounded-lg'>
             <p className='pb-5 text-lg font-medium text-gray-700'>
-              음식 성향에 대해 이야기 해주세요!
+              🍽️ 음식 성향에 대해 이야기 해주세요!
             </p>
             <div className='space-y-6'>
               <Controller
@@ -170,13 +177,13 @@ const Welcome = () => {
 
           <div className='p-6 bg-white rounded-lg'>
             <p className='pb-5 text-lg font-medium text-gray-700'>
-              추가적인 음식 성향을 이야기 해주세요!
+              🍴 추가적인 음식 성향을 이야기 해주세요!
             </p>
 
             <div className='space-y-6'>
               <div>
                 <p className='pb-2 font-medium text-gray-600 text-md'>
-                  이 점은 좋아요
+                  😀 이 점은 좋아요
                 </p>
                 <Controller
                   name='pros'
@@ -206,7 +213,7 @@ const Welcome = () => {
               </div>
               <div>
                 <p className='pb-2 font-medium text-gray-600 text-md'>
-                  이 점은 싫어요
+                  ☹️ 이 점은 싫어요
                 </p>
                 <Controller
                   name='cons'
