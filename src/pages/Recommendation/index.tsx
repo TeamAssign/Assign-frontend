@@ -8,6 +8,7 @@ import useGetRecommendationMenu from '@/hooks/apis/recommendation/useGetRecommen
 import useGetRecommendationStore from '@/hooks/apis/recommendation/useGetRecommendationStore'
 import usePostAcceptMenu from '@/hooks/apis/recommendation/usePostAcceptMenu'
 import { Participant } from '@/types'
+import toast from 'react-hot-toast'
 import { useLocation } from 'react-router-dom'
 
 const Recommendation = () => {
@@ -45,7 +46,7 @@ const Recommendation = () => {
 
   if (isLoading) {
     return (
-      <div className='flex items-center justify-center w-screen h-screen'>
+      <div className='flex items-center justify-center w-full absolute inset-0 max-w-[600px] min-h-screen mx-auto '>
         <Loader />
       </div>
     )
@@ -58,10 +59,8 @@ const Recommendation = () => {
         refetchStoreRecommendation(),
       ])
     } catch (error) {
-      console.error(
-        '추천 데이터를 다시 가져오는 중 오류가 발생했습니다:',
-        error,
-      )
+      console.error(error)
+      toast.error('데이터를 불러오는데 실패했습니다')
     }
   }
 

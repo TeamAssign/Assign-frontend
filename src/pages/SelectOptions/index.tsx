@@ -199,7 +199,11 @@ const SelectOptions = () => {
         )}
       </div>
 
-      <Button onClick={handleClick} disabled={isButtonDisabled}>
+      <Button
+        className='fixed bottom-20 -translate-x-3 w-full max-w-[600px]'
+        onClick={handleClick}
+        disabled={isButtonDisabled}
+      >
         선택 완료
       </Button>
     </div>

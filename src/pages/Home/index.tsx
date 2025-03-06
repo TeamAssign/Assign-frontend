@@ -26,13 +26,14 @@ const Home = () => {
   const { data: companySummary, status: companySummaryStatus } =
     useGetCompanySummary()
 
-  if (
+  const isLoading =
     todayRecommendationStatus === 'pending' ||
     preferenceStatus === 'pending' ||
     companySummaryStatus === 'pending'
-  ) {
+
+  if (isLoading) {
     return (
-      <div className='flex items-center justify-center w-screen h-screen'>
+      <div className='flex items-center justify-center w-full absolute inset-0 max-w-[600px] min-h-screen mx-auto '>
         <Loader />
       </div>
     )
