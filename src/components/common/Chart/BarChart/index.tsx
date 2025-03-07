@@ -28,12 +28,16 @@ interface BarChartProps {
 }
 
 const BarChart = ({ menu }: BarChartProps) => {
+  const topMenuItems = Object.entries(menu)
+    .sort(([, countA], [, countB]) => countB - countA)
+    .slice(0, 5)
+
   const barChartData = {
-    labels: Object.keys(menu),
+    labels: topMenuItems.map(([c]) => c),
     datasets: [
       {
         label: '팀에서 많이 먹은 TOP5 음식',
-        data: Object.values(menu),
+        data: topMenuItems.map(([, value]) => value),
         backgroundColor: BAR_BACKGROUND_COLORS.map((color) => color),
         borderColor: BAR_BORDER_COLORS.map((color) => color),
         borderWidth: 1,
