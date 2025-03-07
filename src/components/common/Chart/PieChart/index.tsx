@@ -87,7 +87,7 @@ const PieChart = ({ data }: PieChartProps) => {
               0,
             )
             const percentage = Math.round((value * 100) / total)
-            return `${label}: ${value}명 (${percentage}%)`
+            return `${label}: ${value}번 (${percentage}%)`
           },
         },
       },
