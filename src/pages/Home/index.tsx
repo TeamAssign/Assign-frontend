@@ -91,11 +91,13 @@ const Home = () => {
             오늘은 이런 메뉴는 어떠세요?
           </h2>
         </div>
-        <RecommendationBar
-          imgUrl={todayRecommend.imageUrl}
-          menu={todayRecommend.name}
-          accuracy={todayRecommend.accuracy}
-        />
+        {todayRecommend && (
+          <RecommendationBar
+            imgUrl={todayRecommend.imageUrl}
+            menu={todayRecommend.name}
+            accuracy={todayRecommend.accuracy}
+          />
+        )}
       </div>
       <div className='flex flex-col gap-1 py-4'>
         <div className='flex flex-col gap-2 pb-4'>
